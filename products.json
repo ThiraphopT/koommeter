@@ -26,28 +26,28 @@
     "s": {"price": 92, "perf": 70, "durability": 74, "reviews": 80},
     "rating": 4.2, "reviews": 2800, "badge": "cheap",
     "pros": ["ราคาถูกที่สุด", "หาซื้อง่าย"],
-    "cons": ["คุณภาพเสียงมอเตอร์ดัง"],
+    "cons": ["เสียงมอเตอร์ดังกว่ารุ่นอื่น"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "mw4", "cat": "kitchen", "sub": "microwave",
-    "brand": "Samsung", "name": "MS23K3515AK 23 ลิตร", "img": "",
+    "brand": "Samsung", "name": "MG23K3515AK 23 ลิตร", "img": "",
     "price": 3990, "old": 4590, "score": 82,
     "s": {"price": 76, "perf": 86, "durability": 86, "reviews": 82},
     "rating": 4.3, "reviews": 1900, "badge": "",
-    "pros": ["ดีไซน์สวย", "ระบบ ceramic enamel"],
+    "pros": ["มีฟังก์ชันย่างในตัว (Grill)", "ระบบ ceramic enamel ล้างง่าย"],
     "cons": ["ราคาค่อนข้างสูง"],
-    "links": {"shopee": "#", "lazada": "", "amazon": ""}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "af1", "cat": "kitchen", "sub": "airfryer",
-    "brand": "Philips", "name": "HD9252/91 4.1 ลิตร", "img": "",
-    "price": 4490, "old": 5490, "score": 88,
-    "s": {"price": 80, "perf": 92, "durability": 90, "reviews": 92},
-    "rating": 4.7, "reviews": 8900, "badge": "best",
-    "pros": ["Rapid Air ทำให้อาหารกรอบสม่ำเสมอ", "แบรนด์ไว้วางใจ รับประกันดี"],
+    "brand": "Philips", "name": "HD9255/30 4.1 ลิตร", "img": "",
+    "price": 3990, "old": 5290, "score": 88,
+    "s": {"price": 82, "perf": 92, "durability": 90, "reviews": 90},
+    "rating": 4.7, "reviews": 7800, "badge": "best",
+    "pros": ["Rapid Air ทำให้อาหารกรอบสม่ำเสมอ", "SmartSense ปรับอุณหภูมิอัตโนมัติ"],
     "cons": ["ราคาสูงกว่าคู่แข่ง"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "af2", "cat": "kitchen", "sub": "airfryer",
@@ -61,11 +61,11 @@
   },
   {
     "id": "af3", "cat": "kitchen", "sub": "airfryer",
-    "brand": "Tefal", "name": "Easy Fry EY201D 4.2 ลิตร", "img": "",
-    "price": 3290, "old": 3890, "score": 85,
-    "s": {"price": 84, "perf": 84, "durability": 88, "reviews": 84},
-    "rating": 4.5, "reviews": 4200, "badge": "",
-    "pros": ["ทำความสะอาดง่าย", "อุณหภูมิแม่นยำ"],
+    "brand": "Tefal", "name": "Easy Fry EY402D 4.2 ลิตร", "img": "",
+    "price": 2990, "old": 3490, "score": 85,
+    "s": {"price": 86, "perf": 82, "durability": 86, "reviews": 84},
+    "rating": 4.5, "reviews": 3800, "badge": "",
+    "pros": ["ทำความสะอาดง่าย", "ตะกร้าเคลือบ non-stick คุณภาพดี"],
     "cons": ["ขนาดตะกร้าเล็กกว่า Philips"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
@@ -75,9 +75,9 @@
     "price": 3790, "old": 4490, "score": 86,
     "s": {"price": 82, "perf": 88, "durability": 84, "reviews": 88},
     "rating": 4.6, "reviews": 6100, "badge": "",
-    "pros": ["ขนาดใหญ่ เหมาะครอบครัว", "มีสูตรอาหารในตัว"],
+    "pros": ["ขนาดใหญ่ เหมาะครอบครัว", "มีสูตรอาหารในตัว 100 เมนู"],
     "cons": ["ทำความสะอาดยากกว่ารุ่นอื่น"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "cf1", "cat": "kitchen", "sub": "coffee",
@@ -87,11 +87,11 @@
     "rating": 4.6, "reviews": 3200, "badge": "best",
     "pros": ["ชงเร็วมาก รสชาติดีเยี่ยม", "ขนาดเล็กกะทัดรัด"],
     "cons": ["ต้องซื้อแคปซูลเพิ่ม"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "cf2", "cat": "kitchen", "sub": "coffee",
-    "brand": "Philips", "name": "HD7461 กาแฟสด", "img": "",
+    "brand": "Philips", "name": "HD7461 กาแฟดริป", "img": "",
     "price": 2190, "old": 2690, "score": 78,
     "s": {"price": 82, "perf": 74, "durability": 76, "reviews": 78},
     "rating": 4.2, "reviews": 1800, "badge": "cheap",
@@ -107,11 +107,11 @@
     "rating": 4.6, "reviews": 2100, "badge": "premium",
     "pros": ["แรงดัน 15 bar เทียบร้านกาแฟ", "ดีไซน์พรีเมียม"],
     "cons": ["ราคาสูง ต้องใช้กาแฟบดละเอียด"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "fr1", "cat": "fridge", "sub": "fridge",
-    "brand": "Mitsubishi", "name": "MR-FX41ES 14.2 คิว", "img": "",
+    "brand": "Mitsubishi Electric", "name": "MR-FX41ES 14.2 คิว", "img": "",
     "price": 24900, "old": 27900, "score": 89,
     "s": {"price": 72, "perf": 94, "durability": 96, "reviews": 92},
     "rating": 4.7, "reviews": 1200, "badge": "best",
@@ -121,31 +121,31 @@
   },
   {
     "id": "fr2", "cat": "fridge", "sub": "fridge",
-    "brand": "Samsung", "name": "RT35K5532S8 12.3 คิว", "img": "",
-    "price": 17900, "old": 19900, "score": 85,
-    "s": {"price": 80, "perf": 86, "durability": 86, "reviews": 86},
-    "rating": 4.5, "reviews": 2800, "badge": "",
-    "pros": ["Twin Cooling Plus ช่วยรักษาความสด", "ดีไซน์สวย"],
+    "brand": "Samsung", "name": "RT38K501J/ST 14.1 คิว", "img": "",
+    "price": 19900, "old": 22900, "score": 84,
+    "s": {"price": 78, "perf": 88, "durability": 86, "reviews": 88},
+    "rating": 4.5, "reviews": 2600, "badge": "",
+    "pros": ["All-Around Cooling เย็นสม่ำเสมอทั้งตู้", "Digital Inverter ประหยัดไฟ"],
     "cons": ["ราคากลาง-สูง"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "fr3", "cat": "fridge", "sub": "fridge",
-    "brand": "Haier", "name": "HRF-IVD379 13.4 คิว", "img": "",
-    "price": 13900, "old": 15900, "score": 82,
-    "s": {"price": 88, "perf": 76, "durability": 80, "reviews": 82},
-    "rating": 4.3, "reviews": 3400, "badge": "cheap",
-    "pros": ["ราคาถูกที่สุดในกลุ่ม", "ความจุดี"],
+    "brand": "Haier", "name": "HRF-D390H 13.8 คิว", "img": "",
+    "price": 12900, "old": 14900, "score": 82,
+    "s": {"price": 88, "perf": 76, "durability": 80, "reviews": 80},
+    "rating": 4.2, "reviews": 3100, "badge": "cheap",
+    "pros": ["ราคาถูกที่สุดในกลุ่ม", "ความจุดี คุ้มค่า"],
     "cons": ["เสียงพัดลมดังกว่า Mitsubishi"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "fr4", "cat": "fridge", "sub": "fridge",
-    "brand": "LG", "name": "GN-B392PLGB 14 คิว", "img": "",
+    "brand": "LG", "name": "GN-B392PLGK 14 คิว", "img": "",
     "price": 19900, "old": 22900, "score": 86,
     "s": {"price": 76, "perf": 88, "durability": 88, "reviews": 88},
     "rating": 4.5, "reviews": 2200, "badge": "",
-    "pros": ["Door Cooling+ ลดเวลาเย็น", "Inverter ประหยัดไฟ"],
+    "pros": ["Door Cooling+ ลดเวลาเย็น", "Linear Inverter ประหยัดไฟ รับประกัน 10 ปี"],
     "cons": ["ราคาค่อนข้างสูง"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
@@ -185,7 +185,7 @@
     "price": 15900, "old": 17900, "score": 84,
     "s": {"price": 78, "perf": 86, "durability": 84, "reviews": 86},
     "rating": 4.4, "reviews": 2900, "badge": "",
-    "pros": ["Triangle design ลมเย็นเร็ว", "Fast Cooling"],
+    "pros": ["Wind-Free ลมไม่ตรงตัว ไม่หนาว", "Fast Cooling ทำเย็นเร็ว"],
     "cons": ["ราคากลาง"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
@@ -201,10 +201,10 @@
   },
   {
     "id": "fn2", "cat": "fan", "sub": "fan",
-    "brand": "Panasonic", "name": "F-MN305 DC Motor 12 นิ้ว", "img": "",
-    "price": 2990, "old": 3490, "score": 87,
-    "s": {"price": 76, "perf": 92, "durability": 90, "reviews": 90},
-    "rating": 4.6, "reviews": 2900, "badge": "",
+    "brand": "Panasonic", "name": "F-MN405M DC Motor 14 นิ้ว", "img": "",
+    "price": 2590, "old": 3090, "score": 86,
+    "s": {"price": 78, "perf": 90, "durability": 90, "reviews": 90},
+    "rating": 4.6, "reviews": 2700, "badge": "",
     "pros": ["DC Motor เงียบมาก ประหยัดไฟ", "ลมนิ่มสม่ำเสมอ"],
     "cons": ["ราคาสูงกว่าพัดลมทั่วไป"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
@@ -231,7 +231,7 @@
   },
   {
     "id": "ws2", "cat": "laundry", "sub": "washer",
-    "brand": "Samsung", "name": "WA13CG5441BD ฝาบน 13 กก.", "img": "",
+    "brand": "Samsung", "name": "WA13CG5441BYST ฝาบน 13 กก.", "img": "",
     "price": 9900, "old": 11900, "score": 84,
     "s": {"price": 84, "perf": 84, "durability": 84, "reviews": 84},
     "rating": 4.4, "reviews": 3200, "badge": "",
@@ -255,9 +255,9 @@
     "price": 13900, "old": 16900, "score": 87,
     "s": {"price": 60, "perf": 98, "durability": 92, "reviews": 96},
     "rating": 4.7, "reviews": 3800, "badge": "premium",
-    "pros": ["แรงดูดสูงสุด ไร้สายใช้ได้นาน", "หัวดูดครบชุด"],
-    "cons": ["ราคาสูงมาก"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "pros": ["แรงดูดสูง ไร้สายใช้ได้นาน", "หัวดูดครบชุด"],
+    "cons": ["ราคาสูง"],
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "vc2", "cat": "floorcare", "sub": "vacuum",
@@ -277,7 +277,7 @@
     "rating": 4.8, "reviews": 2100, "badge": "",
     "pros": ["Laser Detect หาฝุ่นที่มองไม่เห็น", "แรงดูดสูงสุดในตลาด"],
     "cons": ["ราคาแพงที่สุด"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "rb1", "cat": "floorcare", "sub": "robot",
@@ -287,7 +287,7 @@
     "rating": 4.7, "reviews": 4200, "badge": "best",
     "pros": ["แผนผัง LiDAR แม่นยำ", "ถูพื้นพร้อมดูดฝุ่นได้"],
     "cons": ["ราคาค่อนข้างสูง"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "rb2", "cat": "floorcare", "sub": "robot",
@@ -305,7 +305,7 @@
     "price": 11900, "old": 14900, "score": 86,
     "s": {"price": 78, "perf": 88, "durability": 86, "reviews": 90},
     "rating": 4.6, "reviews": 3300, "badge": "",
-    "pros": ["สถานีดูดฝุ่นอัตโนมัติ", "แผนผังดี"],
+    "pros": ["สถานีดูดฝุ่นอัตโนมัติ", "แผนผังดี ราคาคุ้ม"],
     "cons": ["ถุงกรองต้องซื้อเพิ่ม"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
@@ -327,7 +327,7 @@
     "rating": 4.5, "reviews": 8100, "badge": "cheap",
     "pros": ["HEPA จริง ราคาถูก", "เชื่อมต่อ app ได้"],
     "cons": ["แผ่นกรองแพงเมื่อเปลี่ยน"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "ap3", "cat": "airquality", "sub": "purifier",
@@ -337,7 +337,7 @@
     "rating": 4.6, "reviews": 1200, "badge": "premium",
     "pros": ["พัดลม+ฟอกอากาศในเครื่องเดียว", "รายงาน AQI แบบ Real-time"],
     "cons": ["ราคาแพงมาก กรองแพง"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "hd1", "cat": "personal", "sub": "hairdryer",
@@ -347,7 +347,7 @@
     "rating": 4.8, "reviews": 2900, "badge": "premium",
     "pros": ["ไม่ทำลายเส้นผม ลดเวลาอบแห้ง", "เงียบที่สุดในกลุ่ม"],
     "cons": ["ราคาแพงมาก"],
-    "links": {"shopee": "#", "lazada": "#", "amazon": "#"}
+    "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   },
   {
     "id": "hd2", "cat": "personal", "sub": "hairdryer",
@@ -361,12 +361,12 @@
   },
   {
     "id": "hd3", "cat": "personal", "sub": "hairdryer",
-    "brand": "Rowenta", "name": "CV8820 Pro Expert 2400W", "img": "",
-    "price": 2490, "old": 2990, "score": 81,
-    "s": {"price": 82, "perf": 78, "durability": 80, "reviews": 82},
-    "rating": 4.3, "reviews": 1900, "badge": "cheap",
-    "pros": ["กำลังสูง 2400W ราคากลาง", "น้ำหนักเบา"],
-    "cons": ["ไม่มี Nano/Ion technology"],
+    "brand": "Philips", "name": "BHD356/10 ThermoProtect 2300W", "img": "",
+    "price": 1590, "old": 1990, "score": 83,
+    "s": {"price": 92, "perf": 76, "durability": 78, "reviews": 82},
+    "rating": 4.3, "reviews": 4200, "badge": "cheap",
+    "pros": ["ราคาถูกที่สุดในกลุ่ม", "ThermoProtect ป้องกันความร้อนสูงเกิน"],
+    "cons": ["ไม่มี Nano/Ion technology ขั้นสูง"],
     "links": {"shopee": "#", "lazada": "#", "amazon": ""}
   }
 ]
