@@ -121,6 +121,16 @@ td{padding:10px 12px;vertical-align:middle}
 #dropZone p{font-size:14px;margin-bottom:8px}
 #dropZone small{font-size:12px}
 
+/* ── Thumbnail in table ── */
+.td-img{width:48px;height:48px;border-radius:6px;background:#f1f5f9;border:1px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.td-img img{width:100%;height:100%;object-fit:cover}
+.td-img-ph{font-size:20px;opacity:.3}
+
+/* ── Image preview in modal ── */
+.img-preview{width:100%;height:130px;border-radius:8px;background:#f1f5f9;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-top:6px}
+.img-preview img{max-width:100%;max-height:100%;object-fit:contain}
+.img-preview .ph{font-size:12px;color:var(--txt3)}
+
 /* ── Empty state ── */
 .empty{text-align:center;padding:48px;color:var(--txt3)}
 .empty svg{width:48px;height:48px;opacity:.3;margin-bottom:12px}
@@ -203,6 +213,7 @@ td{padding:10px 12px;vertical-align:middle}
     <thead>
       <tr>
         <th>#</th>
+        <th>รูป</th>
         <th>แบรนด์ / รุ่น</th>
         <th>หมวด</th>
         <th>คะแนน</th>
@@ -222,6 +233,12 @@ td{padding:10px 12px;vertical-align:middle}
   <div class="modal-box">
     <h3 id="modalTitle">แก้ไขลิงก์</h3>
     <div class="modal-sub" id="modalSub"></div>
+    <div class="form-group">
+      <label>🖼️ URL รูปสินค้า</label>
+      <input id="inImg" type="url" placeholder="https://down-th.img.susercontent.com/..." oninput="previewImg(this.value)">
+      <div class="hint">วาง URL รูปจาก Shopee / Lazada / ที่อื่นๆ · เว้นว่างถ้าไม่มีรูป</div>
+      <div class="img-preview" id="imgPreview"><span class="ph">ยังไม่มีรูป</span></div>
+    </div>
     <div class="form-group">
       <label><span class="plat-dot shopee"></span> Shopee URL</label>
       <input id="inShopee" type="url" placeholder="https://shopee.co.th/...">
@@ -367,7 +384,7 @@ function renderTable(){
 
   const tbody=document.getElementById('tableBody');
   if(!list.length){
-    tbody.innerHTML=`<tr><td colspan="9"><div class="empty">
+    tbody.innerHTML=`<tr><td colspan="10"><div class="empty">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><br>ไม่พบสินค้า
     </div></td></tr>`;
     return;
@@ -389,8 +406,12 @@ function renderTable(){
       return `<div class="link-cell"><span class="link-icon ${type}">${type[0].toUpperCase()}</span><span class="link-val" title="${val}" ${cls}>${val}</span></div>`;
     }
 
+    const thumbEl=p.img
+      ?`<img src="${p.img}" alt="${p.brand}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`
+      :'';
     return `<tr class="${rowCls}">
       <td>${i+1}</td>
+      <td><div class="td-img">${thumbEl}<span class="td-img-ph"${p.img?' style="display:none"':''}>📷</span></div></td>
       <td><div class="td-brand">${p.brand}</div><div class="td-name">${p.name}</div></td>
       <td><span class="td-cat">${CAT_NAMES[p.cat]||p.cat} · ${SUB_NAMES[p.sub]||p.sub}</span></td>
       <td><span class="td-score ${scoreCls}">${p.score}</span></td>
@@ -410,11 +431,13 @@ function openEdit(id){
   editingId=id;
   document.getElementById('modalTitle').textContent=`✏️ ${p.brand} ${p.name}`;
   document.getElementById('modalSub').textContent=`${CAT_NAMES[p.cat]||p.cat} · ${SUB_NAMES[p.sub]||p.sub} · คะแนน ${p.score}`;
+  document.getElementById('inImg').value=p.img||'';
+  previewImg(p.img||'');
   document.getElementById('inShopee').value=p.links.shopee==='#'?'':p.links.shopee||'';
   document.getElementById('inLazada').value=p.links.lazada==='#'?'':p.links.lazada||'';
   document.getElementById('inAmazon').value=p.links.amazon==='#'?'':p.links.amazon||'';
   document.getElementById('modal').classList.add('show');
-  document.getElementById('inShopee').focus();
+  document.getElementById('inImg').focus();
 }
 
 function closeModal(){
@@ -429,6 +452,7 @@ function saveEdit(){
   const lazada=document.getElementById('inLazada').value.trim();
   const amazon=document.getElementById('inAmazon').value.trim();
   // '' = ไม่ขายในแพลตฟอร์มนั้น, '#' = ยังไม่มีลิงก์ (จะไม่เซ็ตแบบนี้อีก)
+  p.img=document.getElementById('inImg').value.trim();
   p.links.shopee=shopee||'#';
   p.links.lazada=lazada||'#';
   p.links.amazon=amazon||'';
@@ -468,6 +492,16 @@ function exportJSON(){
   a.click();
   URL.revokeObjectURL(a.href);
   showToast('💾 ดาวน์โหลด products.json สำเร็จ — อัปโหลดไปยัง hosting ของคุณ');
+}
+
+// ── Image preview ─────────────────────────────────────────────
+function previewImg(url){
+  const el=document.getElementById('imgPreview');
+  if(url){
+    el.innerHTML=`<img src="${url}" alt="preview" onerror="this.parentElement.innerHTML='<span class=\\'ph\\'>โหลดรูปไม่ได้ — ตรวจสอบ URL อีกครั้ง</span>'">`;
+  } else {
+    el.innerHTML='<span class="ph">ยังไม่มีรูป</span>';
+  }
 }
 
 // ── Filter ────────────────────────────────────────────────────
