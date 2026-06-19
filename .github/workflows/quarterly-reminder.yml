@@ -1,0 +1,94 @@
+name: Quarterly Price Update Reminder
+
+on:
+  # ทุก 3 เดือน: 1 ม.ค., 1 เม.ย., 1 ก.ค., 1 ต.ค. เวลา 09:00 UTC (16:00 ไทย)
+  schedule:
+    - cron: '0 9 1 1,4,7,10 *'
+  workflow_dispatch:
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Count products & check status
+        id: status
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+          from datetime import datetime
+
+          with open('products.json', encoding='utf-8') as f:
+              products = json.load(f)
+
+          total = len(products)
+          missing_links = sum(
+              1 for p in products
+              if any(v == '#' for v in p.get('links', {}).values())
+          )
+          cats = len(set(p['cat'] for p in products))
+          now = datetime.utcnow()
+          quarter = (now.month - 1) // 3 + 1
+          year = now.year
+
+          env_file = os.environ['GITHUB_OUTPUT']
+          with open(env_file, 'a', encoding='utf-8') as f:
+              f.write(f"total={total}\n")
+              f.write(f"missing={missing_links}\n")
+              f.write(f"cats={cats}\n")
+              f.write(f"quarter=Q{quarter}/{year}\n")
+          PYEOF
+
+      - name: Create quarterly reminder issue
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const total = '${{ steps.status.outputs.total }}';
+            const missing = '${{ steps.status.outputs.missing }}';
+            const cats = '${{ steps.status.outputs.cats }}';
+            const quarter = '${{ steps.status.outputs.quarter }}';
+            const missingLine = missing > 0
+              ? `> ⚠️ ยังมี **${missing} รุ่น** ที่ขาด affiliate link — แก้ไขผ่าน \`admin.html\` ก่อนด้วย`
+              : `> ✅ Affiliate links ครบทุกรุ่นแล้ว`;
+
+            const body = `## 📋 อัปเดตราคาสินค้าประจำไตรมาส ${quarter}
+
+            ถึงเวลาทบทวนข้อมูลสินค้า **${total} รุ่น** ใน **${cats} หมวด** แล้ว!
+
+            ${missingLine}
+
+            ---
+
+            ### Checklist ประจำไตรมาส
+            - [ ] ตรวจสอบราคาปัจจุบันบน Shopee / Lazada ว่าตรงกับ \`price\` ใน \`products.json\`
+            - [ ] อัปเดต \`old\` (ราคาขีดฆ่า) ถ้าราคาลดลงไปแล้ว
+            - [ ] ตรวจสอบว่าสินค้าทุกรุ่นยังมีขายอยู่ (ถ้าเลิกผลิตแล้วให้ลบออก)
+            - [ ] อัปเดต \`rating\` และ \`reviews\` จำนวนรีวิวล่าสุด
+            - [ ] ตรวจสอบ affiliate links ว่า URL ยังใช้งานได้อยู่
+            - [ ] พิจารณาเพิ่มสินค้าใหม่ที่น่าสนใจออกมาในช่วงนี้
+            - [ ] อัปเดต \`<p>\` ในส่วน hero ให้แสดงเดือน/ปีที่อัปเดต
+
+            ### เครื่องมือ
+            \`\`\`bash
+            # แปลงจาก CSV
+            python convert.py products.csv
+
+            # ตรวจสอบ score ว่าตรงสูตรหรือเปล่า
+            python convert.py --verify-json products.json
+            \`\`\`
+
+            ---
+            > 🤖 แจ้งเตือนอัตโนมัติทุก 3 เดือน (1 ม.ค. · 1 เม.ย. · 1 ก.ค. · 1 ต.ค.)`;
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `📋 [Quarterly ${quarter}] อัปเดตราคาและข้อมูลสินค้า`,
+              body: body,
+              labels: ['quarterly-update']
+            });

@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KoomMeter Admin — จัดการ Affiliate Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#102A43;--navy2:#1a3a56;
+  --teal:#0FB3A1;--hot:#FF6B35;
+  --green:#22c55e;--red:#ef4444;--amber:#F4A01C;
+  --bg:#f0f4f8;--card:#fff;--border:#dde3ea;
+  --txt:#1e293b;--txt2:#475569;--txt3:#94a3b8;
+  --shopee:#EE4D2D;--lazada:#0F156D;--amazon:#232f3e;
+  --r:10px;--font:'IBM Plex Sans Thai',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--txt);font-size:14px}
+
+/* ── Auth overlay ── */
+#authOverlay{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:9999}
+.auth-box{background:var(--card);border-radius:var(--r);padding:32px;width:320px;text-align:center}
+.auth-box h2{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.auth-box p{font-size:13px;color:var(--txt2);margin-bottom:20px}
+.auth-box input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-family:var(--font);font-size:14px;margin-bottom:12px;outline:none}
+.auth-box input:focus{border-color:var(--teal)}
+.auth-box button{width:100%;background:var(--teal);color:#fff;border:none;border-radius:8px;padding:10px;font-family:var(--font);font-size:14px;font-weight:600;cursor:pointer}
+.auth-box button:hover{background:#0d9d8d}
+.auth-err{color:var(--red);font-size:12px;margin-top:8px;display:none}
+
+/* ── Header ── */
+header{background:var(--navy);color:#fff;padding:12px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+.logo{font-size:16px;font-weight:700;white-space:nowrap}
+.logo span{color:var(--teal)}
+.hstats{display:flex;gap:16px;flex:1;flex-wrap:wrap}
+.hstat{background:rgba(255,255,255,.08);border-radius:8px;padding:6px 14px;text-align:center}
+.hstat-n{font-family:var(--mono);font-size:18px;font-weight:600}
+.hstat-n.red{color:var(--red)}
+.hstat-n.green{color:var(--green)}
+.hstat-n.amber{color:var(--amber)}
+.hstat-l{font-size:10px;color:#94a3b8;margin-top:1px}
+.hbtns{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap}
+.btn{padding:8px 14px;border-radius:8px;border:none;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;text-decoration:none}
+.btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:#0d9d8d}
+.btn-navy{background:rgba(255,255,255,.1);color:#fff;border:1.5px solid rgba(255,255,255,.2)}.btn-navy:hover{background:rgba(255,255,255,.15)}
+.btn-red{background:var(--red);color:#fff}.btn-red:hover{background:#dc2626}
+
+/* ── Alert banner ── */
+#alertBanner{background:#fef2f2;border-bottom:2px solid var(--red);padding:12px 20px;display:none;align-items:center;gap:10px;flex-wrap:wrap}
+#alertBanner.show{display:flex}
+.alert-icon{font-size:20px;flex-shrink:0}
+.alert-text{flex:1;font-weight:500;color:#991b1b}
+.alert-action{background:var(--red);color:#fff;border:none;border-radius:6px;padding:6px 12px;font-family:var(--font);font-size:12px;font-weight:600;cursor:pointer}
+
+/* ── Controls ── */
+.controls{max-width:1200px;margin:16px auto;padding:0 16px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.filter-tabs{display:flex;gap:6px;flex-wrap:wrap}
+.ftab{background:var(--card);border:1.5px solid var(--border);color:var(--txt2);border-radius:20px;padding:5px 14px;font-family:var(--font);font-size:13px;cursor:pointer;transition:.15s}
+.ftab:hover{border-color:var(--teal);color:var(--teal)}
+.ftab.active{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+.search-box{flex:1;max-width:280px}
+.search-box input{width:100%;border:1.5px solid var(--border);border-radius:20px;padding:7px 14px;font-family:var(--font);font-size:13px;outline:none}
+.search-box input:focus{border-color:var(--teal)}
+.cat-sel{border:1.5px solid var(--border);border-radius:20px;padding:6px 12px;font-family:var(--font);font-size:13px;background:var(--card);color:var(--txt);outline:none;cursor:pointer}
+
+/* ── Table ── */
+.table-wrap{max-width:1200px;margin:0 auto;padding:0 16px 32px;overflow-x:auto}
+table{width:100%;border-collapse:collapse;background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.06)}
+thead th{background:var(--navy);color:#fff;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;padding:10px 12px;text-align:left;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .1s}
+tbody tr:hover{background:#f8fafc}
+tbody tr.row-missing{background:#fff5f5}
+tbody tr.row-missing:hover{background:#fee2e2}
+tbody tr.row-ok{background:#f0fdf4}
+tbody tr.row-ok:hover{background:#dcfce7}
+td{padding:10px 12px;vertical-align:middle}
+.td-brand{font-weight:600;font-size:13px}
+.td-name{font-size:12px;color:var(--txt2);margin-top:2px}
+.td-cat{font-size:11px;background:var(--bg);border-radius:10px;padding:2px 8px;display:inline-block;color:var(--txt2)}
+.td-score{font-family:var(--mono);font-weight:600;font-size:15px}
+.td-score.green{color:var(--green)}
+.td-score.amber{color:var(--amber)}
+.td-score.orange{color:var(--hot)}
+.link-cell{display:flex;align-items:center;gap:4px;max-width:200px}
+.link-val{font-family:var(--mono);font-size:10px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--txt2)}
+.link-icon{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;flex-shrink:0;color:#fff}
+.link-icon.shopee{background:var(--shopee)}
+.link-icon.lazada{background:var(--lazada)}
+.link-icon.amazon{background:var(--amazon)}
+.status-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;white-space:nowrap}
+.status-ok{background:#dcfce7;color:#15803d}
+.status-partial{background:#fef9c3;color:#854d0e}
+.status-missing{background:#fee2e2;color:#991b1b}
+.btn-edit{background:none;border:1.5px solid var(--border);border-radius:6px;padding:5px 10px;font-family:var(--font);font-size:12px;cursor:pointer;color:var(--txt2);transition:.15s}
+.btn-edit:hover{border-color:var(--teal);color:var(--teal);background:#f0fdfa}
+
+/* ── Modal ── */
+#modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center;padding:16px}
+#modal.show{display:flex}
+.modal-box{background:var(--card);border-radius:var(--r);width:100%;max-width:520px;padding:24px}
+.modal-box h3{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.modal-sub{font-size:12px;color:var(--txt2);margin-bottom:20px}
+.form-group{margin-bottom:14px}
+.form-group label{display:flex;align-items:center;gap:6px;font-size:12px;font-weight:600;color:var(--txt2);margin-bottom:5px}
+.plat-dot{width:12px;height:12px;border-radius:3px;display:inline-block;flex-shrink:0}
+.plat-dot.shopee{background:var(--shopee)}
+.plat-dot.lazada{background:var(--lazada)}
+.plat-dot.amazon{background:var(--amazon)}
+.form-group input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-family:var(--mono);font-size:13px;outline:none;transition:.15s}
+.form-group input:focus{border-color:var(--teal)}
+.form-group .hint{font-size:11px;color:var(--txt3);margin-top:4px}
+.modal-btns{display:flex;gap:8px;margin-top:20px}
+.modal-btns .btn{flex:1;justify-content:center;padding:10px}
+.btn-outline{background:none;border:1.5px solid var(--border);color:var(--txt2)}.btn-outline:hover{border-color:var(--teal);color:var(--teal)}
+
+/* ── Import drop zone ── */
+#dropZone{border:2px dashed var(--border);border-radius:var(--r);padding:32px;text-align:center;color:var(--txt3);margin:16px;display:none;cursor:pointer;transition:.2s}
+#dropZone.drag-over{border-color:var(--teal);background:#f0fdfa;color:var(--teal)}
+#dropZone p{font-size:14px;margin-bottom:8px}
+#dropZone small{font-size:12px}
+
+/* ── Empty state ── */
+.empty{text-align:center;padding:48px;color:var(--txt3)}
+.empty svg{width:48px;height:48px;opacity:.3;margin-bottom:12px}
+
+/* ── Toast ── */
+#toast{position:fixed;bottom:24px;right:24px;background:var(--navy);color:#fff;padding:12px 18px;border-radius:var(--r);font-size:13px;display:none;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,.2)}
+#toast.show{display:block}
+</style>
+</head>
+<body>
+
+<!-- Auth overlay -->
+<div id="authOverlay">
+  <div class="auth-box">
+    <h2>🔐 KoomMeter Admin</h2>
+    <p>กรุณากรอกรหัสผ่านเพื่อเข้าจัดการระบบ</p>
+    <input type="password" id="pwInput" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')checkPw()">
+    <button onclick="checkPw()">เข้าสู่ระบบ</button>
+    <div class="auth-err" id="authErr">รหัสผ่านไม่ถูกต้อง</div>
+    <p style="font-size:11px;color:#94a3b8;margin-top:16px">รหัสเริ่มต้น: <code>koommeter2026</code></p>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo">คุ้ม<span>มิเตอร์</span> · Admin</div>
+  <div class="hstats">
+    <div class="hstat"><div class="hstat-n" id="hTotal">0</div><div class="hstat-l">สินค้าทั้งหมด</div></div>
+    <div class="hstat"><div class="hstat-n red" id="hMissing">0</div><div class="hstat-l">ขาดลิงก์</div></div>
+    <div class="hstat"><div class="hstat-n amber" id="hPartial">0</div><div class="hstat-l">ลิงก์บางส่วน</div></div>
+    <div class="hstat"><div class="hstat-n green" id="hOk">0</div><div class="hstat-l">ครบแล้ว</div></div>
+  </div>
+  <div class="hbtns">
+    <button class="btn btn-navy" onclick="document.getElementById('fileInput').click()">📂 Import JSON</button>
+    <input type="file" id="fileInput" accept=".json" style="display:none" onchange="importJSON(this)">
+    <button class="btn btn-teal" onclick="exportJSON()">💾 Export products.json</button>
+  </div>
+</header>
+
+<!-- Alert banner -->
+<div id="alertBanner">
+  <div class="alert-icon">🔴</div>
+  <div class="alert-text">พบ <b id="alertCount">0</b> รุ่น ที่ยังไม่มีลิงก์ affiliate ครบ — กรุณาอัปเดตก่อน deploy</div>
+  <button class="alert-action" onclick="setFilter('missing')">ดูสินค้าที่ขาดลิงก์</button>
+</div>
+
+<!-- Drop zone (shown when no data) -->
+<div id="dropZone" onclick="document.getElementById('fileInput').click()">
+  <p>📁 ลาก <b>products.json</b> มาวางที่นี่ หรือคลิกเพื่อเลือกไฟล์</p>
+  <small>หากเปิดไฟล์จากโฟลเดอร์โดยตรง (file://) ต้อง import ไฟล์ products.json ก่อน</small>
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="filter-tabs">
+    <button class="ftab active" id="ftab-all" onclick="setFilter('all')">ทั้งหมด (<span id="cnt-all">0</span>)</button>
+    <button class="ftab" id="ftab-missing" onclick="setFilter('missing')">ขาดลิงก์ ❌ (<span id="cnt-missing">0</span>)</button>
+    <button class="ftab" id="ftab-partial" onclick="setFilter('partial')">บางส่วน ⚠️ (<span id="cnt-partial">0</span>)</button>
+    <button class="ftab" id="ftab-ok" onclick="setFilter('ok')">ครบแล้ว ✅ (<span id="cnt-ok">0</span>)</button>
+  </div>
+  <div class="search-box">
+    <input type="search" id="searchInput" placeholder="ค้นหาแบรนด์ / ชื่อรุ่น…" oninput="renderTable()">
+  </div>
+  <select class="cat-sel" id="catSel" onchange="renderTable()">
+    <option value="all">ทุกหมวด</option>
+    <option value="kitchen">เครื่องครัว</option>
+    <option value="fridge">ตู้เย็น</option>
+    <option value="aircon">แอร์</option>
+    <option value="fan">พัดลม</option>
+    <option value="laundry">เครื่องซักผ้า</option>
+    <option value="floorcare">ทำความสะอาด</option>
+    <option value="airquality">ฟอกอากาศ</option>
+    <option value="personal">ส่วนตัว</option>
+  </select>
+</div>
+
+<!-- Table -->
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>แบรนด์ / รุ่น</th>
+        <th>หมวด</th>
+        <th>คะแนน</th>
+        <th>Shopee Link</th>
+        <th>Lazada Link</th>
+        <th>Amazon Link</th>
+        <th>สถานะ</th>
+        <th>แก้ไข</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+</div>
+
+<!-- Edit modal -->
+<div id="modal">
+  <div class="modal-box">
+    <h3 id="modalTitle">แก้ไขลิงก์</h3>
+    <div class="modal-sub" id="modalSub"></div>
+    <div class="form-group">
+      <label><span class="plat-dot shopee"></span> Shopee URL</label>
+      <input id="inShopee" type="url" placeholder="https://shopee.co.th/...">
+      <div class="hint">ใส่ลิงก์จริง หรือเว้นว่างถ้าไม่ขายใน Shopee · <b>#</b> = ยังไม่มีลิงก์</div>
+    </div>
+    <div class="form-group">
+      <label><span class="plat-dot lazada"></span> Lazada URL</label>
+      <input id="inLazada" type="url" placeholder="https://www.lazada.co.th/...">
+      <div class="hint">ใส่ลิงก์จริง หรือเว้นว่างถ้าไม่ขายใน Lazada</div>
+    </div>
+    <div class="form-group">
+      <label><span class="plat-dot amazon"></span> Amazon URL (ถ้ามี)</label>
+      <input id="inAmazon" type="url" placeholder="https://www.amazon.com/...">
+      <div class="hint">เว้นว่างถ้าไม่ขายใน Amazon</div>
+    </div>
+    <div class="modal-btns">
+      <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+      <button class="btn btn-teal" onclick="saveEdit()">💾 บันทึก</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notification -->
+<div id="toast"></div>
+
+<script>
+// ── Auth ─────────────────────────────────────────────────────
+// เปลี่ยนรหัสผ่านได้ที่บรรทัดนี้
+const ADMIN_PW = 'koommeter2026';
+
+function checkPw(){
+  const pw=document.getElementById('pwInput').value;
+  if(pw===ADMIN_PW){
+    sessionStorage.setItem('km_auth','1');
+    document.getElementById('authOverlay').style.display='none';
+    init();
+  } else {
+    document.getElementById('authErr').style.display='block';
+  }
+}
+if(sessionStorage.getItem('km_auth')==='1'){
+  document.getElementById('authOverlay').style.display='none';
+}
+
+// ── Data ─────────────────────────────────────────────────────
+let products=[];
+let editingId=null;
+let activeFilter='all';
+
+const CAT_NAMES={
+  kitchen:'เครื่องครัว',fridge:'ตู้เย็น',aircon:'แอร์',
+  fan:'พัดลม',laundry:'เครื่องซักผ้า',floorcare:'ทำความสะอาด',
+  airquality:'ฟอกอากาศ',personal:'ส่วนตัว'
+};
+const SUB_NAMES={
+  microwave:'ไมโครเวฟ',airfryer:'แอร์ฟรายเออร์',coffee:'กาแฟ',
+  fridge:'ตู้เย็น',air:'แอร์',fan:'พัดลม',washer:'เครื่องซักผ้า',
+  vacuum:'เครื่องดูดฝุ่น',robot:'หุ่นยนต์',purifier:'ฟอกอากาศ',
+  hairdryer:'ไดร์เป่าผม'
+};
+
+// ── Link status logic ─────────────────────────────────────────
+function linkStatus(p){
+  const {shopee,lazada,amazon}=p.links;
+  const isPlaceholder=v=>!v||v==='#';
+  const missing=[
+    isPlaceholder(shopee)&&'Shopee',
+    isPlaceholder(lazada)&&'Lazada',
+  ].filter(Boolean);
+  // Amazon is optional — only flag if it WAS set to '#'
+  if(amazon==='#') missing.push('Amazon');
+  if(missing.length===0) return 'ok';
+  // Check if at least one real link exists
+  const hasAny=(!isPlaceholder(shopee)||!isPlaceholder(lazada)||(!isPlaceholder(amazon)&&amazon!=''));
+  return hasAny?'partial':'missing';
+}
+
+function missingLinks(p){
+  const res=[];
+  if(!p.links.shopee||p.links.shopee==='#') res.push('Shopee');
+  if(!p.links.lazada||p.links.lazada==='#') res.push('Lazada');
+  if(p.links.amazon==='#') res.push('Amazon');
+  return res;
+}
+
+// ── Stats ─────────────────────────────────────────────────────
+function updateStats(){
+  const total=products.length;
+  let missing=0,partial=0,ok=0;
+  products.forEach(p=>{
+    const s=linkStatus(p);
+    if(s==='missing') missing++;
+    else if(s==='partial') partial++;
+    else ok++;
+  });
+  document.getElementById('hTotal').textContent=total;
+  document.getElementById('hMissing').textContent=missing;
+  document.getElementById('hPartial').textContent=partial;
+  document.getElementById('hOk').textContent=ok;
+
+  const needAlert=missing+partial;
+  const banner=document.getElementById('alertBanner');
+  if(needAlert>0){
+    document.getElementById('alertCount').textContent=needAlert;
+    banner.classList.add('show');
+  } else {
+    banner.classList.remove('show');
+  }
+}
+
+// ── Filter counts ─────────────────────────────────────────────
+function updateFilterCounts(){
+  const cat=document.getElementById('catSel').value;
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered=products.filter(p=>{
+    if(cat!=='all'&&p.cat!==cat) return false;
+    if(q&&!(`${p.brand} ${p.name}`.toLowerCase().includes(q))) return false;
+    return true;
+  });
+  let all=filtered.length,missing=0,partial=0,ok=0;
+  filtered.forEach(p=>{const s=linkStatus(p);if(s==='missing')missing++;else if(s==='partial')partial++;else ok++;});
+  document.getElementById('cnt-all').textContent=all;
+  document.getElementById('cnt-missing').textContent=missing;
+  document.getElementById('cnt-partial').textContent=partial;
+  document.getElementById('cnt-ok').textContent=ok;
+}
+
+// ── Render table ──────────────────────────────────────────────
+function renderTable(){
+  const cat=document.getElementById('catSel').value;
+  const q=document.getElementById('searchInput').value.trim().toLowerCase();
+  updateFilterCounts();
+
+  let list=products.filter(p=>{
+    if(cat!=='all'&&p.cat!==cat) return false;
+    if(q&&!(`${p.brand} ${p.name}`.toLowerCase().includes(q))) return false;
+    const s=linkStatus(p);
+    if(activeFilter==='missing'&&s!=='missing') return false;
+    if(activeFilter==='partial'&&s!=='partial') return false;
+    if(activeFilter==='ok'&&s!=='ok') return false;
+    return true;
+  });
+
+  const tbody=document.getElementById('tableBody');
+  if(!list.length){
+    tbody.innerHTML=`<tr><td colspan="9"><div class="empty">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><br>ไม่พบสินค้า
+    </div></td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML=list.map((p,i)=>{
+    const st=linkStatus(p);
+    const rowCls=st==='ok'?'row-ok':st==='missing'?'row-missing':'';
+    const scoreCls=p.score>=85?'green':p.score>=72?'amber':'orange';
+    const statusEl=st==='ok'
+      ?'<span class="status-badge status-ok">✅ ครบแล้ว</span>'
+      :st==='partial'
+      ?`<span class="status-badge status-partial">⚠️ บางส่วน<br><small>${missingLinks(p).join(', ')}</small></span>`
+      :`<span class="status-badge status-missing">❌ ขาดลิงก์<br><small>${missingLinks(p).join(', ')}</small></span>`;
+
+    function linkCell(type,url){
+      const cls=!url?'style="color:#94a3b8"':url==='#'?'style="color:var(--amber)"':'style="color:var(--green)"';
+      const val=!url?'— ไม่ขาย':url==='#'?'# ยังไม่มีลิงก์':url;
+      return `<div class="link-cell"><span class="link-icon ${type}">${type[0].toUpperCase()}</span><span class="link-val" title="${val}" ${cls}>${val}</span></div>`;
+    }
+
+    return `<tr class="${rowCls}">
+      <td>${i+1}</td>
+      <td><div class="td-brand">${p.brand}</div><div class="td-name">${p.name}</div></td>
+      <td><span class="td-cat">${CAT_NAMES[p.cat]||p.cat} · ${SUB_NAMES[p.sub]||p.sub}</span></td>
+      <td><span class="td-score ${scoreCls}">${p.score}</span></td>
+      <td>${linkCell('shopee',p.links.shopee)}</td>
+      <td>${linkCell('lazada',p.links.lazada)}</td>
+      <td>${linkCell('amazon',p.links.amazon)}</td>
+      <td>${statusEl}</td>
+      <td><button class="btn-edit" onclick="openEdit('${p.id}')">✏️ แก้ไข</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ── Edit modal ────────────────────────────────────────────────
+function openEdit(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+  editingId=id;
+  document.getElementById('modalTitle').textContent=`✏️ ${p.brand} ${p.name}`;
+  document.getElementById('modalSub').textContent=`${CAT_NAMES[p.cat]||p.cat} · ${SUB_NAMES[p.sub]||p.sub} · คะแนน ${p.score}`;
+  document.getElementById('inShopee').value=p.links.shopee==='#'?'':p.links.shopee||'';
+  document.getElementById('inLazada').value=p.links.lazada==='#'?'':p.links.lazada||'';
+  document.getElementById('inAmazon').value=p.links.amazon==='#'?'':p.links.amazon||'';
+  document.getElementById('modal').classList.add('show');
+  document.getElementById('inShopee').focus();
+}
+
+function closeModal(){
+  document.getElementById('modal').classList.remove('show');
+  editingId=null;
+}
+
+function saveEdit(){
+  const p=products.find(x=>x.id===editingId);
+  if(!p) return;
+  const shopee=document.getElementById('inShopee').value.trim();
+  const lazada=document.getElementById('inLazada').value.trim();
+  const amazon=document.getElementById('inAmazon').value.trim();
+  // '' = ไม่ขายในแพลตฟอร์มนั้น, '#' = ยังไม่มีลิงก์ (จะไม่เซ็ตแบบนี้อีก)
+  p.links.shopee=shopee||'#';
+  p.links.lazada=lazada||'#';
+  p.links.amazon=amazon||'';
+  closeModal();
+  updateStats();
+  renderTable();
+  showToast(`💾 บันทึก ${p.brand} ${p.name} แล้ว`);
+}
+
+// ── Import / Export ───────────────────────────────────────────
+function importJSON(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    try{
+      products=JSON.parse(e.target.result);
+      document.getElementById('dropZone').style.display='none';
+      updateStats();
+      renderTable();
+      showToast(`📂 โหลด ${products.length} รุ่นจาก ${file.name} สำเร็จ`);
+    }catch(err){
+      alert('ไฟล์ JSON ไม่ถูกต้อง: '+err.message);
+    }
+  };
+  reader.readAsText(file,'utf-8');
+  input.value='';
+}
+
+function exportJSON(){
+  if(!products.length){alert('ไม่มีข้อมูลสินค้า');return;}
+  const json=JSON.stringify(products,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='products.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  showToast('💾 ดาวน์โหลด products.json สำเร็จ — อัปโหลดไปยัง hosting ของคุณ');
+}
+
+// ── Filter ────────────────────────────────────────────────────
+function setFilter(f){
+  activeFilter=f;
+  document.querySelectorAll('.ftab').forEach(el=>el.classList.remove('active'));
+  document.getElementById(`ftab-${f}`).classList.add('active');
+  renderTable();
+}
+
+// ── Toast ─────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ── Drag & Drop ───────────────────────────────────────────────
+const dz=document.getElementById('dropZone');
+document.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('drag-over')});
+document.addEventListener('dragleave',()=>dz.classList.remove('drag-over'));
+document.addEventListener('drop',e=>{
+  e.preventDefault();
+  dz.classList.remove('drag-over');
+  const file=e.dataTransfer.files[0];
+  if(file&&file.name.endsWith('.json')){
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{
+        products=JSON.parse(ev.target.result);
+        dz.style.display='none';
+        updateStats();renderTable();
+        showToast(`📂 โหลด ${products.length} รุ่นสำเร็จ`);
+      }catch(err){alert('JSON ไม่ถูกต้อง: '+err.message);}
+    };
+    reader.readAsText(file,'utf-8');
+  }
+});
+
+// ── Close modal on backdrop click ─────────────────────────────
+document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// ── Init ─────────────────────────────────────────────────────
+async function init(){
+  try{
+    const r=await fetch('products.json');
+    if(r.ok){
+      products=await r.json();
+      updateStats();
+      renderTable();
+    } else {
+      document.getElementById('dropZone').style.display='block';
+    }
+  }catch(e){
+    document.getElementById('dropZone').style.display='block';
+  }
+}
+
+if(sessionStorage.getItem('km_auth')==='1') init();
+</script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+# คุ้มมิเตอร์ (KoomMeter) — เอกสารส่งต่องาน (AI Agent Handoff)
+
+> เว็บไซต์รีวิว/จัดอันดับความคุ้มค่าเครื่องใช้ไฟฟ้าในตลาดไทย พร้อมลิงก์ affiliate
+> ไฟล์เดียวจบ ไม่มี build step โฮสต์ที่ static host ไหนก็ได้
+
+---
+
+## 1. ภาพรวมโปรเจกต์ (Project Overview)
+
+- **ชื่อแบรนด์:** คุ้มมิเตอร์ · KoomMeter
+- **เป้าหมาย:** ให้คะแนน "ความคุ้มค่า" ของเครื่องใช้ไฟฟ้าแต่ละรุ่นแบบโปร่งใส จัดอันดับ และพาผู้ใช้คลิกไปซื้อผ่านลิงก์ affiliate (Shopee / Lazada / Amazon) เพื่อสร้างรายได้คอมมิชชัน
+- **กลุ่มเป้าหมาย:** ผู้บริโภคไทย เน้นมือถือเป็นหลัก
+- **โมเดลรายได้:** affiliate commission (หลายแพลตฟอร์มรวมกัน)
+- **สถานะปัจจุบัน:** โครงเว็บ + ข้อมูลสินค้าจริง 33 รุ่น + ระบบคะแนนทำงานครบ **ยังขาดลิงก์ affiliate จริงและรูปสินค้าจริง** (เจ้าของจะใส่เอง)
+
+## 2. Tech Stack / ข้อจำกัด
+
+- **ไฟล์เดียว:** `index.html` (ภาษา HTML + CSS + Vanilla JS ในไฟล์เดียว ~58KB) ไม่มี framework, ไม่มี build, ไม่มี dependency ติดตั้ง
+- **ฟอนต์:** โหลดจาก Google Fonts — `Chakra Petch` (หัวข้อ/ตัวเลขคะแนน), `IBM Plex Sans Thai` (เนื้อหา), `IBM Plex Mono` (ราคา/ตัวเลข)
+- **ไม่มี backend / database** — ข้อมูลทั้งหมดอยู่ใน array `PRODUCTS` ใน `<script>` ท้ายไฟล์
+- **ไม่ใช้ localStorage/sessionStorage** ในเวอร์ชันปัจจุบัน (state เก็บในตัวแปร JS ระหว่าง session) — ถ้า self-host สามารถเพิ่ม localStorage ได้ (ทำงานได้นอก artifact)
+- **Deploy:** อัปโหลด `index.html` ขึ้น static host ได้เลย เช่น GitHub Pages, Netlify, Vercel, Cloudflare Pages หรือ hosting ทั่วไป
+
+## 3. โครงสร้างภายในไฟล์ `index.html`
+
+เรียงจากบนลงล่าง:
+1. `<head>` — meta, SEO title/description, preconnect + ลิงก์ Google Fonts
+2. `<style>` — design tokens (`:root` CSS variables) + ทุก component style + responsive + `prefers-reduced-motion`
+3. `<body>` markup:
+   - `#disclose` — แถบเปิดเผย affiliate ด้านบน (ปิดได้)
+   - `<header>` — โลโก้ + ช่องค้นหา + `#tabs` (แถบหมวดหมู่)
+   - `.hero` — พาดหัว + สถิติ + `#feature` (สินค้าคุ้มสุดประจำสัปดาห์)
+   - controls — `#subchips` (หมวดย่อย) + `#sortSel` (เรียงลำดับ) + `#secTitle`/`#secCount` + `#grid` (รายการสินค้า)
+   - `.method` — อธิบายเกณฑ์ให้คะแนน
+   - `<footer>` — คำเปิดเผย affiliate (legal disclosure)
+   - `#cmpbar` + `#cmpModal` — แถบ/หน้าต่างเปรียบเทียบ
+4. `<script>` — ข้อมูล + ตรรกะทั้งหมด (ดูหัวข้อ 5–6)
+
+## 4. โมเดลข้อมูล (Data Model)
+
+### 4.1 `PRODUCTS` — array ของสินค้า (แหล่งข้อมูลหลัก แก้ที่นี่)
+
+```js
+P({
+  id:'mw1',                 // id ไม่ซ้ำ
+  cat:'kitchen',            // id หมวดหลัก (ต้องตรงกับ CATS)
+  sub:'microwave',          // id หมวดย่อย (ต้องตรงกับ subs ใน CATS หมวดนั้น)
+  brand:'Sharp',
+  name:'R-200W 20 ลิตร',
+  img:'',                   // ★ URL รูปสินค้า — ว่าง = แสดงไอคอนแทน (ดูข้อ 8)
+  price:2090,               // ราคาปัจจุบัน (บาท)
+  old:2490,                 // ราคาก่อนลด (0 = ไม่แสดงราคาขีดฆ่า)
+  score:87,                 // ★ คะแนนรวม — ต้องตรงกับสูตร (ดูข้อ 7)
+  s:{price:94,perf:78,durability:86,reviews:88}, // คะแนนย่อย 0–100
+  rating:4.5,               // ดาวรีวิวเฉลี่ย
+  reviews:4200,             // จำนวนรีวิว
+  badge:'best',             // 'best' | 'cheap' | 'premium' | '' (ไม่มี)
+  pros:['...','...'],       // ข้อดี (แนะนำ 2 ข้อ)
+  cons:['...'],             // ข้อสังเกต (แนะนำ 1 ข้อ)
+  links:{shopee:'#',lazada:'#',amazon:''} // ★ URL affiliate — '' = ซ่อนปุ่มนั้น
+})
+```
+
+**ป้าย badge** แมปกับข้อความ/สีในตัวแปร `BADGES`: `best`→"คุ้มสุด", `cheap`→"ราคาประหยัด", `premium`→"ตัวท็อป"
+
+### 4.2 `CATS` — โครงหมวดหมู่ (8 หมวด)
+
+```js
+{ id:'kitchen', name:'เครื่องครัว', icon:'<path .../>', subs:[ {id:'microwave',name:'ไมโครเวฟ'}, ... ] }
+```
+
+หมวดปัจจุบัน (id → ชื่อ → หมวดย่อย):
+| id | ชื่อ | หมวดย่อย (sub id) |
+|---|---|---|
+| `kitchen` | เครื่องครัว | microwave, airfryer, coffee |
+| `fridge` | ตู้เย็น | fridge |
+| `aircon` | เครื่องปรับอากาศ | air |
+| `fan` | พัดลม | fan |
+| `laundry` | เครื่องซักผ้า | washer |
+| `floorcare` | ทำความสะอาดพื้น | vacuum, robot |
+| `airquality` | เครื่องฟอกอากาศ | purifier |
+| `personal` | เครื่องใช้ส่วนตัว | hairdryer |
+
+> หมวดที่มีหมวดย่อยเดียว จะ**ไม่แสดงแถบ chip หมวดย่อย** อัตโนมัติ (ตรรกะ `if(cat.subs.length<2)`)
+
+### 4.3 `ICONS` — แมป `sub id` → inner SVG (ไอคอน fallback เมื่อไม่มีรูป)
+
+ทุก `sub` ใหม่ต้องมี entry ใน `ICONS` ด้วย ไม่งั้นจะไม่มีไอคอนแสดง
+
+## 5. State และ flow การ render
+
+**State (ตัวแปร global):** `activeCat`, `activeSub` ('all' = ทั้งหมด), `sortBy` ('value'|'priceLow'|'priceHigh'|'reviews'), `searchQ`, `compare` (array ของ id สูงสุด 3)
+
+**Pipeline:** `renderAll()` → `renderTabs()` + `renderSubs()` + `renderGrid()`
+- `getList()` = filter ตาม cat/sub/คำค้น → sort ตาม `sortBy`
+- `renderGrid()` วาดการ์ดผ่าน `card(p, rank)` แล้วเรียก `animateBars()`, `animateGauges()`, `bindCardEvents()`
+- `renderFeature()` เลือกสินค้าคะแนนสูงสุดทั้งเว็บมาโชว์ใน hero
+
+## 6. ฟังก์ชันสำคัญ (อ้างอิงเร็ว)
+
+| ฟังก์ชัน | หน้าที่ |
+|---|---|
+| `gauge(score,size)` / `gaugeLabel(score,size)` | วาดเกจวัดความคุ้ม (SVG arc) + ตัวเลขคะแนน |
+| `tier(s)` / `tierColor(s)` | จับคู่คะแนน→ระดับสี (≥85 เขียว, ≥72 เหลือง, <72 ส้ม) |
+| `thumb(p)` | กล่องรูปสินค้า: `<img>` + ไอคอน fallback (`onerror="this.remove()"`) |
+| `stars(r)` | แถวดาวรีวิว |
+| `buyBtn(type,url)` | ปุ่มซื้อต่อแพลตฟอร์ม — คืนค่าว่างถ้า `url` ว่าง, ใส่ `rel="sponsored nofollow noopener"` |
+| `card(p,rank)` | การ์ดสินค้า 1 ใบ |
+| `bdItem(label,v)` | แถบคะแนนย่อย (breakdown bar) |
+| `openCompare()` / `renderCmpBar()` | ตารางเปรียบเทียบ + แถบเลือกด้านล่าง |
+
+## 7. สูตรคะแนนความคุ้มค่า (สำคัญมาก — ต้องรักษาความสอดคล้อง)
+
+```
+score = round( 0.35*s.price + 0.25*s.perf + 0.20*s.durability + 0.20*s.reviews )
+```
+
+- น้ำหนัก: **ราคา/ความคุ้ม 35% · ประสิทธิภาพ 25% · ความทนทาน 20% · รีวิว 20%** (เน้นความคุ้มค่าตามธีมเว็บ)
+- คะแนนย่อยทุกตัวอยู่ในช่วง 0–100
+- ⚠️ **ค่า `score` ถูกเก็บไว้ล่วงหน้า ไม่ได้คำนวณตอน runtime** — ถ้า agent แก้ค่าใน `s:{}` ต้อง**คำนวณ `score` ใหม่ตามสูตรนี้** ให้ตรงกัน (สามารถเขียนสคริปต์ตรวจสอบความถูกต้องได้)
+- เกณฑ์แต่ละด้านอธิบายในส่วน `.method` ของหน้าเว็บ (ราคา/สเปก, ประสิทธิภาพ, ความทนทาน, รีวิวผู้ใช้)
+
+## 8. ระบบรูปภาพ (ข้อจำกัดที่ต้องรู้)
+
+- การ์ดจะ render `<img src="{img}">` ทับไอคอน ถ้า `img` มีค่า; ถ้ารูปโหลดไม่สำเร็จ `onerror` จะลบ `<img>` แล้วโชว์ไอคอนแทนอัตโนมัติ
+- **ยังไม่มี URL รูปจริง** (ทุกตัว `img:''`) เพราะรูปจากร้าน/แบรนด์ส่วนใหญ่บล็อก hotlink ข้ามโดเมน
+- **แหล่งรูปที่ถูกต้อง:** ดึง URL รูปจากระบบ/ฟีด affiliate เดียวกับลิงก์ (Shopee/Lazada มี product image URL ให้ใช้ได้ตามสิทธิ์) หรือดาวน์โหลดรูปมาโฮสต์เองในโฟลเดอร์ `/images/`
+- CSS รองรับแล้ว: `.thumb img { object-fit:cover }`
+
+## 9. ดีไซน์ซิสเทม (Design Tokens — แก้ที่ `:root`)
+
+- **โทนหลัก:** navy เข้ม (`--navy #102A43`) เป็นโครงสร้าง, teal (`--teal #0FB3A1`) = ดี/ผ่าน, ส้ม (`--hot #FF6B35`) = CTA/ดีลเด่น, เหลือง (`--amber`) = คะแนนกลาง
+- **สีแพลตฟอร์ม:** `--shopee #EE4D2D`, `--lazada #0F156D`, `--amazon` (ปุ่มใช้ `#232f3e`)
+- **เกจวัดความคุ้ม** = signature element ของแบรนด์ (อย่าถอดออก)
+- responsive breakpoints: 560 / 760 / 860 / 420px; มี `prefers-reduced-motion`
+
+## 10. ฟีเจอร์ที่ทำเสร็จแล้ว
+
+ค้นหา (ชื่อ/ยี่ห้อ) · กรองหมวด/หมวดย่อย · เรียงลำดับ 4 แบบ · จัดอันดับอัตโนมัติ (มงกุฎอันดับ 1) · เกจคะแนน + breakdown 4 ด้าน · ป้าย badge · ปุ่ม affiliate หลายแพลตฟอร์ม (ซ่อนปุ่มที่ไม่มีลิงก์, ใส่ rel ถูกต้อง) · เปรียบเทียบสูงสุด 3 รุ่น (แถบล่าง + ตาราง modal) · แถบ + ฟุตเตอร์เปิดเผย affiliate · responsive มือถือ
+
+## 11. งานที่ต้องทำต่อ (TODO สำหรับ Agent)
+
+**จำเป็น (เจ้าของเตรียมข้อมูลให้):**
+1. ใส่ลิงก์ affiliate จริงใน `links:{}` ของทุกสินค้า (แทน `'#'`)
+2. ใส่ URL รูปสินค้าจริงใน `img:''` ของทุกสินค้า (ดูข้อ 8)
+3. ทบทวน/อัปเดตราคาให้เป็นปัจจุบัน (ราคาในเว็บเป็นค่าประมาณ ณ มิ.ย. 2026 — มีโน้ตแจ้งผู้ใช้แล้ว)
+
+**แนะนำให้ทำเพิ่ม (priority สูง→ต่ำ):**
+4. **แยกข้อมูลออกเป็น `products.json`** + โหลดด้วย `fetch()` เพื่อจัดการง่ายขึ้นเมื่อสินค้าเยอะ
+5. **ระบบนำเข้าจาก CSV → JSON** (คอลัมน์: id, cat, sub, brand, name, img, price, old, s_price, s_perf, s_durability, s_reviews, rating, reviews, badge, pros, cons, link_shopee, link_lazada, link_amazon) + สคริปต์คำนวณ `score` อัตโนมัติตามสูตรข้อ 7
+6. **เพิ่ม Analytics** (GA4 + Meta Pixel) และ event tracking ตอนคลิกปุ่มซื้อ เพื่อวัด conversion
+7. **หน้ารีวิวเชิงลึกแยกต่อรุ่น** (slug ต่อสินค้า) เพื่อ SEO + เนื้อหายาว
+8. **ขยายหมวด/หมวดย่อย** เช่น แยกแอร์ตาม BTU (9000/12000/18000/24000), แยกตู้เย็นตามจำนวนประตู, เพิ่มหม้อหุงข้าว/เตาอบ/เครื่องปั่นในเครื่องครัว → **ต้องหาข้อมูลรุ่นจริงมาเติม อย่าแต่งตัวเลขเอง**
+9. price auto-sync จาก affiliate API (ถ้าแพลตฟอร์มรองรับ)
+10. dark mode (design tokens พร้อมแล้ว เพิ่ม media query / toggle ได้)
+
+## 12. วิธีขยายงาน (How-to)
+
+**เพิ่มสินค้า 1 รุ่น:** เพิ่ม object `P({...})` ใน `PRODUCTS` ให้ครบทุก field (ดูข้อ 4.1) — `cat`/`sub` ต้องมีอยู่จริงใน `CATS` และคำนวณ `score` ตามสูตร
+
+**เพิ่มหมวดย่อยใหม่:** (1) เพิ่ม `{id,name}` ใน `subs` ของหมวดที่ต้องการใน `CATS` (2) เพิ่มไอคอนใน `ICONS` ด้วย `sub id` เดียวกัน (3) เพิ่มสินค้าที่ใช้ `sub` นั้น
+
+**เพิ่มหมวดหลักใหม่:** เพิ่ม object ใน `CATS` (`id`, `name`, `icon` = inner SVG, `subs`) — แท็บและสถิติ "หมวดหลัก" จะอัปเดตเอง (statCats = `CATS.length`)
+
+**กฎเหล็กสำหรับ Agent:**
+- ห้ามแต่งสเปก/ราคา/รีวิวขึ้นเอง — เว็บนี้ขายความน่าเชื่อถือของอันดับ ข้อมูลต้องมาจากการค้นหาจริง
+- รักษา `score` ให้ตรงสูตรเสมอ
+- ปุ่ม affiliate ต้องคง `rel="sponsored nofollow noopener"` และต้องมีคำเปิดเผย affiliate (กฎของแพลตฟอร์ม + ความน่าเชื่อถือ)
+- คงเกจวัดความคุ้ม (signature) และโครงดีไซน์โทน navy/teal/ส้มไว้
+
+## 13. ข้อมูลอ้างอิงสินค้า (ที่มา)
+
+ข้อมูลรุ่น/สเปก/ราคา รวบรวมจากบทความรีวิว/จัดอันดับตลาดไทย (มิ.ย. 2026) เช่น mybest.th, priceded, productnation, top10.in.th, toplistplus, kapook, wongnai, NocNoc, Shopee/Lazada blog ฯลฯ — ราคาเป็นค่าประมาณ ควรยืนยันกับหน้าร้านจริงผ่านลิงก์ affiliate
+
+---
+*ไฟล์หลัก: `index.html` · เอกสารนี้: `HANDOFF.md`*

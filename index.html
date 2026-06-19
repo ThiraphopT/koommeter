@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>คุ้มมิเตอร์ · KoomMeter — จัดอันดับเครื่องใช้ไฟฟ้าที่คุ้มค่าที่สุดในไทย</title>
+<meta name="description" content="เปรียบเทียบและจัดอันดับเครื่องใช้ไฟฟ้าที่คุ้มค่าที่สุดในตลาดไทย ด้วยคะแนนโปร่งใส พร้อมลิงก์ซื้อจาก Shopee, Lazada และ Amazon">
+<meta property="og:title" content="คุ้มมิเตอร์ · KoomMeter">
+<meta property="og:description" content="จัดอันดับเครื่องใช้ไฟฟ้าที่คุ้มค่าที่สุดในไทย">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#102A43;--navy2:#1a3a56;--navy3:#243f5c;
+  --teal:#0FB3A1;--teal2:#0d9d8d;
+  --hot:#FF6B35;--hot2:#e55d28;
+  --amber:#F4A01C;--amber2:#d98e0e;
+  --green:#22c55e;--red:#ef4444;
+  --bg:#f0f4f8;--card:#fff;--border:#dde3ea;
+  --txt:#1e293b;--txt2:#475569;--txt3:#94a3b8;
+  --shopee:#EE4D2D;--lazada:#0F156D;--amazon:#232f3e;
+  --r:12px;--r2:8px;--shadow:0 2px 12px rgba(0,0,0,.08);
+  --shadow2:0 4px 24px rgba(0,0,0,.12);
+  --font-head:'Chakra Petch',sans-serif;
+  --font-body:'IBM Plex Sans Thai',sans-serif;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-body);background:var(--bg);color:var(--txt);font-size:15px;line-height:1.6}
+
+/* ── Disclosure bar ── */
+#disclose{background:var(--navy);color:#cbd5e1;font-size:12px;padding:8px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+#disclose a{color:var(--teal);text-decoration:none}
+#disclose button{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:16px;line-height:1;padding:2px 4px}
+#disclose button:hover{color:#fff}
+
+/* ── Header ── */
+header{background:var(--navy);color:#fff;padding:0 16px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.3)}
+.hinner{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px;padding:10px 0}
+.logo{font-family:var(--font-head);font-size:20px;font-weight:700;color:#fff;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.logo span{color:var(--teal)}
+.search-wrap{flex:1;max-width:340px;position:relative}
+.search-wrap input{width:100%;padding:8px 14px 8px 36px;border-radius:20px;border:1.5px solid var(--navy3);background:rgba(255,255,255,.08);color:#fff;font-family:var(--font-body);font-size:14px;outline:none;transition:.2s}
+.search-wrap input::placeholder{color:#94a3b8}
+.search-wrap input:focus{border-color:var(--teal);background:rgba(255,255,255,.12)}
+.search-wrap svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);opacity:.5;pointer-events:none}
+#tabs{display:flex;gap:4px;overflow-x:auto;padding:8px 0 10px;scrollbar-width:none;flex:1}
+#tabs::-webkit-scrollbar{display:none}
+.tab{background:transparent;border:none;color:#94a3b8;cursor:pointer;padding:6px 12px;border-radius:20px;font-family:var(--font-body);font-size:13px;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:.15s;flex-shrink:0}
+.tab svg{width:14px;height:14px;opacity:.7}
+.tab:hover{background:rgba(255,255,255,.08);color:#fff}
+.tab.active{background:var(--teal);color:#fff;font-weight:600}
+.tab.active svg{opacity:1}
+
+/* ── Hero ── */
+.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 60%,#1a4060 100%);color:#fff;padding:32px 16px 24px}
+.hero-inner{max-width:1100px;margin:0 auto}
+.hero h1{font-family:var(--font-head);font-size:clamp(22px,4vw,32px);font-weight:700;margin-bottom:6px}
+.hero h1 em{color:var(--teal);font-style:normal}
+.hero p{color:#94a3b8;font-size:14px;margin-bottom:20px}
+.stats{display:flex;gap:24px;flex-wrap:wrap;margin-bottom:24px}
+.stat{text-align:center}
+.stat-n{font-family:var(--font-head);font-size:24px;font-weight:700;color:var(--teal)}
+.stat-l{font-size:11px;color:#94a3b8;margin-top:2px}
+
+/* ── Feature card ── */
+#feature{background:rgba(255,255,255,.06);border:1.5px solid rgba(15,179,161,.3);border-radius:var(--r);padding:16px;max-width:520px}
+.feat-label{font-size:11px;color:var(--teal);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.feat-body{display:flex;gap:14px;align-items:center}
+.feat-thumb{width:72px;height:72px;flex-shrink:0;background:rgba(255,255,255,.06);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.feat-thumb img{width:100%;height:100%;object-fit:cover;border-radius:var(--r2)}
+.feat-thumb svg{width:36px;height:36px;opacity:.4}
+.feat-info{flex:1;min-width:0}
+.feat-brand{font-size:11px;color:var(--teal);font-weight:600}
+.feat-name{font-size:14px;font-weight:600;margin:2px 0 4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.feat-price{font-family:var(--font-mono);font-size:15px;color:var(--hot);font-weight:500}
+.feat-score-wrap{display:flex;align-items:center;gap:8px}
+.feat-score-box{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.feat-score-num{font-family:var(--font-head);font-size:16px;font-weight:700;color:#fff;line-height:1}
+
+/* ── Controls ── */
+.controls{max-width:1100px;margin:16px auto;padding:0 16px;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+#subchips{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+.chip{background:var(--card);border:1.5px solid var(--border);color:var(--txt2);cursor:pointer;padding:5px 12px;border-radius:16px;font-family:var(--font-body);font-size:13px;white-space:nowrap;transition:.15s}
+.chip:hover{border-color:var(--teal);color:var(--teal)}
+.chip.active{background:var(--teal);border-color:var(--teal);color:#fff;font-weight:600}
+.sort-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.sort-wrap label{font-size:12px;color:var(--txt3);white-space:nowrap}
+#sortSel{border:1.5px solid var(--border);background:var(--card);color:var(--txt);border-radius:var(--r2);padding:5px 10px;font-family:var(--font-body);font-size:13px;cursor:pointer;outline:none}
+#sortSel:focus{border-color:var(--teal)}
+.sec-header{max-width:1100px;margin:0 auto;padding:0 16px 8px;display:flex;align-items:baseline;gap:8px}
+#secTitle{font-family:var(--font-head);font-size:16px;font-weight:700;color:var(--navy)}
+#secCount{font-size:12px;color:var(--txt3)}
+
+/* ── Grid ── */
+#grid{max-width:1100px;margin:0 auto;padding:0 16px 32px;display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+
+/* ── Card ── */
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow2)}
+.card-top-bar{display:flex;justify-content:space-between;align-items:center;padding:8px 10px 0;min-height:26px}
+.rank-crown{background:var(--amber);color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px;font-family:var(--font-head);display:inline-flex;align-items:center;gap:3px}
+.rank-num{background:var(--txt3)}
+.badge-pill{font-size:10px;font-weight:700;padding:3px 8px;border-radius:10px}
+.badge-best{background:var(--teal);color:#fff}
+.badge-cheap{background:var(--green);color:#fff}
+.badge-premium{background:var(--navy);color:#fff}
+
+/* ── Card header: thumb · info · score ── */
+.card-header{display:flex;gap:11px;padding:8px 12px 6px;align-items:flex-start}
+.card-thumb-sm{width:76px;height:76px;flex-shrink:0;background:#f1f5f9;border-radius:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
+.card-thumb-sm img{width:100%;height:100%;object-fit:cover;border-radius:8px;position:absolute;inset:0}
+.card-thumb-sm svg{width:34px;height:34px;opacity:.2}
+.card-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.card-brand{font-size:10px;color:var(--teal);font-weight:700;text-transform:uppercase;letter-spacing:.4px}
+.card-name{font-size:13px;font-weight:600;color:var(--txt);line-height:1.35}
+.sub-tag{display:inline-block;font-size:10px;background:var(--bg);color:var(--txt3);border:1px solid var(--border);border-radius:6px;padding:1px 7px;margin-top:3px;align-self:flex-start;white-space:nowrap}
+
+/* ── Score box (replaces half-circle gauge) ── */
+.score-box{width:50px;height:50px;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;flex-shrink:0;margin-top:2px}
+.score-num{font-family:var(--font-head);font-size:18px;font-weight:700;line-height:1.1}
+.score-lbl{font-size:8px;opacity:.9;margin-top:1px;font-weight:600;letter-spacing:.2px;text-align:center}
+
+/* ── Price & stars ── */
+.card-price-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-top:4px}
+.price-now{font-family:var(--font-mono);font-size:15px;font-weight:600;color:var(--hot)}
+.price-old{font-family:var(--font-mono);font-size:11px;color:var(--txt3);text-decoration:line-through}
+.savings-badge{font-size:9px;font-weight:700;background:#dcfce7;color:#15803d;padding:2px 5px;border-radius:5px;white-space:nowrap}
+.stars{display:flex;align-items:center;gap:3px;flex-wrap:wrap;margin-top:3px}
+.stars svg{width:10px;height:10px;flex-shrink:0}
+.star-fill{color:var(--amber)}
+.stars span{font-size:10px;color:var(--txt2)}
+
+/* ── Card body: breakdown · pros/cons · buttons ── */
+.card-body{padding:0 12px 12px;flex:1;display:flex;flex-direction:column;gap:8px}
+.breakdown{display:flex;flex-direction:column;gap:5px;background:var(--bg);border-radius:8px;padding:9px 10px}
+.bd-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--txt2)}
+.bd-label{width:72px;flex-shrink:0;font-size:10.5px}
+.bd-bar{flex:1;height:5px;background:#dde3ea;border-radius:3px;overflow:hidden}
+.bd-fill{height:100%;border-radius:3px;transition:width .6s ease;width:0}
+.bd-val{width:22px;text-align:right;font-family:var(--font-mono);font-size:10px;color:var(--txt2);font-weight:500}
+.pros-cons{font-size:12px;color:var(--txt2)}
+.pros-cons p{margin-bottom:4px;display:flex;align-items:flex-start;gap:5px;line-height:1.45}
+.pros-cons .ico-p{color:var(--teal);flex-shrink:0}
+.pros-cons .ico-c{color:var(--amber);flex-shrink:0}
+.buy-row{display:flex;gap:6px;flex-wrap:wrap;margin-top:auto}
+.btn-buy{flex:1;min-width:64px;padding:9px 8px;border:none;border-radius:var(--r2);color:#fff;font-family:var(--font-body);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;text-align:center;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:4px;min-height:40px}
+.btn-buy:hover{filter:brightness(1.1);transform:translateY(-1px)}
+.btn-shopee{background:var(--shopee)}
+.btn-lazada{background:var(--lazada)}
+.btn-amazon{background:var(--amazon)}
+.btn-cmp{background:transparent;border:1.5px solid var(--border);color:var(--txt2);flex:none;padding:8px 10px;border-radius:var(--r2);font-size:11px;font-family:var(--font-body);cursor:pointer;transition:.15s;white-space:nowrap;min-height:40px}
+.btn-cmp:hover{border-color:var(--teal);color:var(--teal)}
+.btn-cmp.selected{background:var(--teal);border-color:var(--teal);color:#fff}
+.no-results{grid-column:1/-1;text-align:center;padding:64px 16px;color:var(--txt3)}
+.no-results svg{width:48px;height:48px;opacity:.3;margin-bottom:12px}
+
+/* ── Method section ── */
+.method{background:var(--card);border-top:1px solid var(--border);padding:32px 16px;margin-top:8px}
+.method-inner{max-width:1100px;margin:0 auto}
+.method h2{font-family:var(--font-head);font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.method p{font-size:13px;color:var(--txt2);margin-bottom:16px}
+.method-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.method-card{background:var(--bg);border-radius:var(--r2);padding:14px;border:1px solid var(--border)}
+.method-card h3{font-family:var(--font-head);font-size:14px;font-weight:600;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.method-card p{font-size:12px;color:var(--txt2)}
+.weight-badge{background:var(--teal);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;font-family:var(--font-mono)}
+
+/* ── Footer ── */
+footer{background:var(--navy);color:#64748b;padding:24px 16px;font-size:12px}
+footer .finner{max-width:1100px;margin:0 auto}
+footer a{color:#94a3b8;text-decoration:none}
+footer a:hover{color:var(--teal)}
+footer .disc{margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;line-height:1.7}
+
+/* ── Compare bar ── */
+#cmpbar{position:fixed;bottom:0;left:0;right:0;background:var(--navy);border-top:2px solid var(--teal);padding:10px 16px;display:none;z-index:200;align-items:center;gap:12px}
+#cmpbar.visible{display:flex}
+.cmp-slots{display:flex;gap:8px;flex:1;overflow-x:auto}
+.cmp-slot{background:rgba(255,255,255,.08);border:1.5px dashed rgba(255,255,255,.2);border-radius:var(--r2);padding:6px 12px;min-width:120px;font-size:12px;color:#94a3b8;display:flex;align-items:center;justify-content:space-between;gap:6px;white-space:nowrap}
+.cmp-slot.filled{border-style:solid;border-color:var(--teal);color:#fff}
+.cmp-slot-rm{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:14px;padding:0 2px;line-height:1}
+.cmp-slot-rm:hover{color:#fff}
+#btnCmp{background:var(--teal);border:none;color:#fff;padding:9px 18px;border-radius:var(--r2);font-family:var(--font-body);font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;flex-shrink:0}
+#btnCmp:hover{background:var(--teal2)}
+#btnCmpClear{background:none;border:none;color:#94a3b8;cursor:pointer;font-size:12px;flex-shrink:0}
+#btnCmpClear:hover{color:#fff}
+
+/* ── Compare modal ── */
+#cmpModal{display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.6);align-items:center;justify-content:center;padding:16px}
+#cmpModal.visible{display:flex}
+.cmp-box{background:var(--card);border-radius:var(--r);max-width:900px;width:100%;max-height:90vh;overflow:auto;padding:20px}
+.cmp-box h2{font-family:var(--font-head);font-size:18px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.cmp-close{background:none;border:none;cursor:pointer;color:var(--txt2);font-size:22px;line-height:1;padding:0}
+.cmp-table{width:100%;border-collapse:collapse;font-size:13px}
+.cmp-table th,.cmp-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
+.cmp-table th{background:var(--bg);font-weight:600;font-family:var(--font-head);font-size:12px;color:var(--txt2);text-transform:uppercase;letter-spacing:.3px;white-space:nowrap}
+.cmp-table .cmp-best{color:var(--teal);font-weight:700}
+.cmp-gauge{display:flex;align-items:center;gap:6px}
+
+/* ── Responsive ── */
+@media(max-width:760px){
+  .hinner{flex-wrap:wrap;padding:8px 0}
+  .logo{font-size:17px}
+  .search-wrap{max-width:none;order:3;width:100%}
+  #tabs{order:4;width:100%;padding:4px 0 8px}
+  .stats{gap:16px}
+  .feat-body{flex-direction:row}
+}
+/* Single-column on mobile — full-width cards, all details visible */
+@media(max-width:640px){
+  #grid{grid-template-columns:1fr;gap:12px;padding:0 10px 24px}
+  .card-header{gap:10px}
+  .card-thumb-sm{width:70px;height:70px}
+  .score-box{width:46px;height:46px}
+  .score-num{font-size:16px}
+}
+/* 2 columns on tablet */
+@media(min-width:641px) and (max-width:960px){
+  #grid{grid-template-columns:1fr 1fr;gap:14px}
+}
+@media(prefers-reduced-motion:reduce){
+  *{transition:none!important;animation:none!important}
+}
+
+/* ── Tier colors ── */
+.tier-green{color:var(--green)}
+.tier-amber{color:var(--amber)}
+.tier-orange{color:var(--hot)}
+.fill-green{background:var(--green)}
+.fill-amber{background:var(--amber)}
+.fill-orange{background:var(--hot)}
+.fill-teal{background:var(--teal)}
+</style>
+</head>
+<body>
+
+<!-- Disclosure bar -->
+<div id="disclose">
+  <span>⚡ เว็บนี้ใช้ลิงก์ affiliate — เมื่อท่านซื้อผ่านลิงก์ เราได้รับค่าคอมมิชชันโดยไม่มีค่าใช้จ่ายเพิ่ม <a href="#footer-disc">อ่านเพิ่มเติม</a></span>
+  <button onclick="this.parentElement.style.display='none'" aria-label="ปิด">×</button>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="hinner">
+    <a href="#" class="logo">คุ้ม<span>มิเตอร์</span></a>
+    <div class="search-wrap">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="search" id="searchInput" placeholder="ค้นหาสินค้า เช่น Sharp, ไมโครเวฟ…" aria-label="ค้นหา">
+    </div>
+    <nav id="tabs" role="tablist" aria-label="หมวดหมู่สินค้า"></nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero" aria-label="ข้อมูลสรุป">
+  <div class="hero-inner">
+    <h1>จัดอันดับ<em>ความคุ้มค่า</em>เครื่องใช้ไฟฟ้าไทย</h1>
+    <p>คะแนนโปร่งใส · อัปเดต มิ.ย. 2026 · เปรียบเทียบได้สูงสุด 3 รุ่น</p>
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="statProds">33</div><div class="stat-l">รุ่นที่รีวิวแล้ว</div></div>
+      <div class="stat"><div class="stat-n" id="statCats">8</div><div class="stat-l">หมวดหลัก</div></div>
+      <div class="stat"><div class="stat-n">4</div><div class="stat-l">เกณฑ์คะแนน</div></div>
+      <div class="stat"><div class="stat-n">3</div><div class="stat-l">แพลตฟอร์มซื้อ</div></div>
+    </div>
+    <div id="feature"></div>
+  </div>
+</section>
+
+<!-- Controls -->
+<div class="controls">
+  <div id="subchips"></div>
+  <div class="sort-wrap">
+    <label for="sortSel">เรียงตาม</label>
+    <select id="sortSel">
+      <option value="value">คะแนนคุ้มค่า</option>
+      <option value="priceLow">ราคา (ต่ำ→สูง)</option>
+      <option value="priceHigh">ราคา (สูง→ต่ำ)</option>
+      <option value="reviews">รีวิวเยอะสุด</option>
+    </select>
+  </div>
+</div>
+<div class="sec-header">
+  <h2 id="secTitle">ทุกหมวด</h2>
+  <span id="secCount"></span>
+</div>
+
+<!-- Product grid -->
+<main id="grid" role="main" aria-label="รายการสินค้า"></main>
+
+<!-- Scoring method -->
+<section class="method">
+  <div class="method-inner">
+    <h2>เกณฑ์คะแนน "ความคุ้มค่า"</h2>
+    <p>เราใช้สูตร <strong>score = 0.35×ราคา + 0.25×ประสิทธิภาพ + 0.20×ความทนทาน + 0.20×รีวิว</strong> เพื่อให้ได้คะแนน 0–100 ที่เปรียบเทียบข้ามหมวดได้</p>
+    <div class="method-grid">
+      <div class="method-card">
+        <h3><span class="weight-badge">35%</span> ราคา/ความคุ้ม</h3>
+        <p>เทียบราคากับสเปกและคู่แข่งในกลุ่มเดียวกัน สินค้าราคาประหยัดแต่สเปกดีจะได้คะแนนสูง</p>
+      </div>
+      <div class="method-card">
+        <h3><span class="weight-badge">25%</span> ประสิทธิภาพ</h3>
+        <p>จากสเปกจริง เช่น กำลังวัตต์, ความจุ, ฟีเจอร์ เทียบกับมาตรฐานในกลุ่มราคา</p>
+      </div>
+      <div class="method-card">
+        <h3><span class="weight-badge">20%</span> ความทนทาน</h3>
+        <p>รับประกัน, ชื่อเสียงแบรนด์, รายงานจากผู้ใช้ระยะยาว และวัสดุที่ใช้</p>
+      </div>
+      <div class="method-card">
+        <h3><span class="weight-badge">20%</span> รีวิวผู้ใช้</h3>
+        <p>ดาวเฉลี่ยและจำนวนรีวิวจาก Shopee/Lazada/Amazon เพื่อสะท้อนความพึงพอใจจริง</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="finner">
+    <div>© 2026 <strong>คุ้มมิเตอร์ · KoomMeter</strong> — ข้อมูลราคาเป็นค่าประมาณ ณ มิ.ย. 2026 ควรตรวจสอบกับหน้าร้านจริง</div>
+    <div id="footer-disc" class="disc">
+      <strong>การเปิดเผยข้อมูล affiliate:</strong> คุ้มมิเตอร์เป็นผู้เข้าร่วมโปรแกรม Shopee Affiliate, Lazada Affiliate และ Amazon Associates เมื่อท่านคลิกลิงก์และซื้อสินค้า เราอาจได้รับค่าคอมมิชชันจากการซื้อของท่าน ซึ่งไม่มีค่าใช้จ่ายเพิ่มเติมสำหรับท่าน การเปิดเผยนี้เป็นไปตามข้อกำหนดของแต่ละแพลตฟอร์มและ FTC Guidelines การจัดอันดับและคะแนนของเราเป็นความเห็นอิสระและไม่ได้รับอิทธิพลจากการเป็น affiliate
+    </div>
+    <div style="margin-top:10px;font-size:11px;color:#475569">
+      ราคาและสต็อกสินค้าอาจเปลี่ยนแปลงได้ตลอดเวลา · ข้อมูลรีวิวรวบรวมจากแหล่งสาธารณะ · <a href="mailto:contact@koommeter.com">ติดต่อเรา</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Compare bar -->
+<div id="cmpbar" role="complementary" aria-label="เปรียบเทียบสินค้า">
+  <div class="cmp-slots" id="cmpSlots"></div>
+  <button id="btnCmp" onclick="openCompare()">เปรียบเทียบ</button>
+  <button id="btnCmpClear" onclick="clearCompare()">ล้าง</button>
+</div>
+
+<!-- Compare modal -->
+<div id="cmpModal" role="dialog" aria-modal="true" aria-label="ตารางเปรียบเทียบ">
+  <div class="cmp-box">
+    <h2>เปรียบเทียบสินค้า <button class="cmp-close" onclick="closeCompare()" aria-label="ปิด">×</button></h2>
+    <div id="cmpContent"></div>
+  </div>
+</div>
+
+<script>
+// ─── Data ───────────────────────────────────────────────────
+const CATS = [
+  { id:'kitchen', name:'เครื่องครัว', icon:'<path d="M3 3h18v2H3zM8 7v10h2V7zm6 0v10h2V7zM5 19h14v2H5z" fill="currentColor"/>',
+    subs:[{id:'microwave',name:'ไมโครเวฟ'},{id:'airfryer',name:'แอร์ฟรายเออร์'},{id:'coffee',name:'เครื่องชงกาแฟ'}]},
+  { id:'fridge', name:'ตู้เย็น', icon:'<rect x="4" y="2" width="16" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><line x1="4" y1="10" x2="20" y2="10" stroke="currentColor" stroke-width="2"/>',
+    subs:[{id:'fridge',name:'ตู้เย็น'}]},
+  { id:'aircon', name:'แอร์', icon:'<path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2" fill="none"/>',
+    subs:[{id:'air',name:'เครื่องปรับอากาศ'}]},
+  { id:'fan', name:'พัดลม', icon:'<circle cx="12" cy="12" r="3" fill="currentColor"/><path d="M12 9c0-3.31 2-6 4.5-6S21 5 21 9s-3 4-4.5 3M12 15c0 3.31-2 6-4.5 6S3 19 3 15s3-4 4.5-3M9 12c-3.31 0-6-2-6-4.5S5 3 9 3s4 3 3 4.5M15 12c3.31 0 6 2 6 4.5S19 21 15 21s-4-3-3-4.5" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+    subs:[{id:'fan',name:'พัดลม'}]},
+  { id:'laundry', name:'เครื่องซักผ้า', icon:'<rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="7" r="1" fill="currentColor"/>',
+    subs:[{id:'washer',name:'เครื่องซักผ้า'}]},
+  { id:'floorcare', name:'ทำความสะอาด', icon:'<path d="M9 3L5 7l4 4M15 3l4 4-4 4M12 7v14" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/>',
+    subs:[{id:'vacuum',name:'เครื่องดูดฝุ่น'},{id:'robot',name:'หุ่นยนต์ดูดฝุ่น'}]},
+  { id:'airquality', name:'ฟอกอากาศ', icon:'<path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="9" r="2.5" fill="currentColor"/>',
+    subs:[{id:'purifier',name:'เครื่องฟอกอากาศ'}]},
+  { id:'personal', name:'ส่วนตัว', icon:'<path d="M12 2C8 2 5 5 5 8c0 4 7 14 7 14s7-10 7-14c0-3-3-6-7-6zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4z" fill="currentColor"/>',
+    subs:[{id:'hairdryer',name:'ไดร์เป่าผม'}]},
+];
+
+const ICONS = {
+  microwave:'<path d="M3 6h18v12H3z" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="14" y="9" width="4" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  airfryer:'<path d="M8 3h8l2 4H6L8 3z" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="7" width="14" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="3" fill="none" stroke="currentColor" stroke-width="1.5"/>',
+  coffee:'<path d="M6 2v6a6 6 0 0 0 12 0V2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 8h12M8 22h8M12 14v8" stroke="currentColor" stroke-width="1.5"/>',
+  fridge:'<rect x="5" y="2" width="14" height="20" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><line x1="5" y1="10" x2="19" y2="10" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="6" x2="10" y2="8" stroke="currentColor" stroke-width="1.5"/><line x1="10" y1="14" x2="10" y2="18" stroke="currentColor" stroke-width="1.5"/>',
+  air:'<rect x="2" y="5" width="20" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M6 19h12M7 15v4M17 15v4" stroke="currentColor" stroke-width="1.5"/><path d="M6 10h6M6 13h4" stroke="currentColor" stroke-width="1.5"/>',
+  fan:'<circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 10c0-2.5 1.5-4.5 3.5-4.5S19 7 19 10s-2.5 2.5-3.5 2M12 14c0 2.5-1.5 4.5-3.5 4.5S5 17 5 14s2.5-2.5 3.5-2M10 12c-2.5 0-4.5-1.5-4.5-3.5S7 5 10 5s2.5 2.5 2 3.5M14 12c2.5 0 4.5 1.5 4.5 3.5S17 19 14 19s-2.5-2.5-2-3.5" stroke="currentColor" stroke-width="1.5" fill="none"/>',
+  washer:'<rect x="3" y="3" width="18" height="18" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="13" r="4" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="7" r="1" fill="currentColor"/><circle cx="12" cy="7" r="1" fill="currentColor"/>',
+  vacuum:'<path d="M3 12h14M17 12l4-4-4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/><circle cx="7" cy="17" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 12v5M9 12v3" stroke="currentColor" stroke-width="1.5"/>',
+  robot:'<rect x="3" y="8" width="18" height="11" rx="5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="8" cy="13" r="1.5" fill="currentColor"/><circle cx="16" cy="13" r="1.5" fill="currentColor"/><path d="M9 5h6M12 5v3" stroke="currentColor" stroke-width="1.5"/>',
+  purifier:'<rect x="6" y="2" width="12" height="20" rx="3" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M9 8h6M9 11h4M9 14h5" stroke="currentColor" stroke-width="1.5"/>',
+  hairdryer:'<path d="M5 12a7 7 0 0 1 14 0H5z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 12v6M9 18h6M19 5l-4 4" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="4" r="2" fill="currentColor"/>',
+};
+
+const BADGES = { best:{text:'คุ้มสุด',cls:'badge-best'}, cheap:{text:'ราคาประหยัด',cls:'badge-cheap'}, premium:{text:'ตัวท็อป',cls:'badge-premium'} };
+
+const SUB_NAMES = {
+  microwave:'ไมโครเวฟ',airfryer:'แอร์ฟรายเออร์',coffee:'เครื่องชงกาแฟ',
+  fridge:'ตู้เย็น',air:'เครื่องปรับอากาศ',fan:'พัดลม',washer:'เครื่องซักผ้า',
+  vacuum:'เครื่องดูดฝุ่น',robot:'หุ่นยนต์ดูดฝุ่น',purifier:'เครื่องฟอกอากาศ',
+  hairdryer:'ไดร์เป่าผม'
+};
+
+const PRODUCTS = [];
+function P(o){ PRODUCTS.push(o); }
+
+// ─── Products Data ───────────────────────────────────────────
+// ★ MICROWAVE
+P({id:'mw1',cat:'kitchen',sub:'microwave',brand:'Sharp',name:'R-200W 20 ลิตร',img:'',price:2090,old:2490,score:87,s:{price:94,perf:78,durability:86,reviews:88},rating:4.5,reviews:4200,badge:'best',pros:['ราคาประหยัดที่สุดในกลุ่ม','ใช้งานง่าย ทนทาน'],cons:['ไม่มีระบบ inverter']  ,links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'mw2',cat:'kitchen',sub:'microwave',brand:'Panasonic',name:'NN-ST34H 25 ลิตร',img:'',price:3290,old:3890,score:84,s:{price:82,perf:84,durability:88,reviews:82},rating:4.4,reviews:3100,badge:'',pros:['แบรนด์เชื่อถือได้','ขนาดกำลังดี'],cons:['ราคาสูงกว่า Sharp เล็กน้อย'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'mw3',cat:'kitchen',sub:'microwave',brand:'Midea',name:'AM820C 20 ลิตร',img:'',price:1890,old:0,score:80,s:{price:92,perf:70,durability:74,reviews:80},rating:4.2,reviews:2800,badge:'cheap',pros:['ราคาถูกที่สุด','หาซื้อง่าย'],cons:['คุณภาพเสียงมอเตอร์ดัง'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'mw4',cat:'kitchen',sub:'microwave',brand:'Samsung',name:'MS23K3515AK 23 ลิตร',img:'',price:3990,old:4590,score:82,s:{price:76,perf:86,durability:86,reviews:82},rating:4.3,reviews:1900,badge:'',pros:['ดีไซน์สวย','ระบบ ceramic enamel'],cons:['ราคาค่อนข้างสูง'],links:{shopee:'#',lazada:'',amazon:''}})
+
+// ★ AIR FRYER
+P({id:'af1',cat:'kitchen',sub:'airfryer',brand:'Philips',name:'HD9252/91 4.1 ลิตร',img:'',price:4490,old:5490,score:88,s:{price:80,perf:92,durability:90,reviews:92},rating:4.7,reviews:8900,badge:'best',pros:['Rapid Air ทำให้อาหารกรอบสม่ำเสมอ','แบรนด์ไว้วางใจ รับประกันดี'],cons:['ราคาสูงกว่าคู่แข่ง'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+P({id:'af2',cat:'kitchen',sub:'airfryer',brand:'Xiaomi',name:'Smart Air Fryer 3.5L',img:'',price:2490,old:2990,score:83,s:{price:90,perf:80,durability:76,reviews:84},rating:4.4,reviews:5600,badge:'cheap',pros:['ราคาประหยัด','เชื่อมต่อแอปได้'],cons:['แอปภาษาอังกฤษ ไม่มีไทย'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'af3',cat:'kitchen',sub:'airfryer',brand:'Tefal',name:'Easy Fry EY201D 4.2 ลิตร',img:'',price:3290,old:3890,score:85,s:{price:84,perf:84,durability:88,reviews:84},rating:4.5,reviews:4200,badge:'',pros:['ทำความสะอาดง่าย','อุณหภูมิแม่นยำ'],cons:['ขนาดตะกร้าเล็กกว่า Philips'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'af4',cat:'kitchen',sub:'airfryer',brand:'Cosori',name:'CP158-AF 5.5 ลิตร',img:'',price:3790,old:4490,score:86,s:{price:82,perf:88,durability:84,reviews:88},rating:4.6,reviews:6100,badge:'',pros:['ขนาดใหญ่ เหมาะครอบครัว','มีสูตรอาหารในตัว'],cons:['ทำความสะอาดยากกว่ารุ่นอื่น'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+
+// ★ COFFEE
+P({id:'cf1',cat:'kitchen',sub:'coffee',brand:'Nespresso',name:'Essenza Mini EN85 ',img:'',price:4990,old:6490,score:86,s:{price:74,perf:94,durability:88,reviews:90},rating:4.6,reviews:3200,badge:'best',pros:['ชงเร็วมาก รสชาติดีเยี่ยม','ขนาดเล็กกะทัดรัด'],cons:['ต้องซื้อแคปซูลเพิ่ม'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+P({id:'cf2',cat:'kitchen',sub:'coffee',brand:'Philips',name:'HD7461 กาแฟสด',img:'',price:2190,old:2690,score:78,s:{price:82,perf:74,durability:76,reviews:78},rating:4.2,reviews:1800,badge:'cheap',pros:['ราคาถูก ใช้กาแฟบดได้เลย','ทำความสะอาดง่าย'],cons:['รสชาติสู้เครื่อง pressure ไม่ได้'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'cf3',cat:'kitchen',sub:'coffee',brand:'De\'Longhi',name:'Dedica EC685 Pump',img:'',price:8990,old:10990,score:84,s:{price:60,perf:96,durability:90,reviews:88},rating:4.6,reviews:2100,badge:'premium',pros:['แรงดัน 15 bar เทียบร้านกาแฟ','ดีไซน์พรีเมียม'],cons:['ราคาสูง ต้องใช้กาแฟบดละเอียด'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+
+// ★ FRIDGE
+P({id:'fr1',cat:'fridge',sub:'fridge',brand:'Mitsubishi',name:'MR-FX41ES 14.2 คิว',img:'',price:24900,old:27900,score:89,s:{price:72,perf:94,durability:96,reviews:92},rating:4.7,reviews:1200,badge:'best',pros:['ประหยัดไฟเบอร์ 5 ดาว','เงียบมาก ทนทาน'],cons:['ราคาสูง'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'fr2',cat:'fridge',sub:'fridge',brand:'Samsung',name:'RT35K5532S8 12.3 คิว',img:'',price:17900,old:19900,score:85,s:{price:80,perf:86,durability:86,reviews:86},rating:4.5,reviews:2800,badge:'',pros:['Twin Cooling Plus ช่วยรักษาความสด','ดีไซน์สวย'],cons:['ราคากลาง-สูง'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'fr3',cat:'fridge',sub:'fridge',brand:'Haier',name:'HRF-IVD379 13.4 คิว',img:'',price:13900,old:15900,score:82,s:{price:88,perf:76,durability:80,reviews:82},rating:4.3,reviews:3400,badge:'cheap',pros:['ราคาถูกที่สุดในกลุ่ม','ความจุดี'],cons:['เสียงพัดลมดังกว่า Mitsubishi'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'fr4',cat:'fridge',sub:'fridge',brand:'LG',name:'GN-B392PLGB 14 คิว',img:'',price:19900,old:22900,score:86,s:{price:76,perf:88,durability:88,reviews:88},rating:4.5,reviews:2200,badge:'',pros:['Door Cooling+ ลดเวลาเย็น','Inverter ประหยัดไฟ'],cons:['ราคาค่อนข้างสูง'],links:{shopee:'#',lazada:'#',amazon:''}})
+
+// ★ AIR CON
+P({id:'ac1',cat:'aircon',sub:'air',brand:'Daikin',name:'FTKQ15UV2S 12000 BTU',img:'',price:17900,old:20900,score:90,s:{price:70,perf:96,durability:96,reviews:96},rating:4.8,reviews:4500,badge:'best',pros:['ประหยัดไฟเบอร์ 5 ดาว','เงียบที่สุดในกลุ่ม รับประกัน 10 ปี'],cons:['ราคาสูงกว่าคู่แข่ง'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'ac2',cat:'aircon',sub:'air',brand:'Mitsubishi Electric',name:'MS-GN13VF 12000 BTU',img:'',price:16900,old:18900,score:88,s:{price:74,perf:92,durability:94,reviews:92},rating:4.7,reviews:3800,badge:'',pros:['Inverter คุณภาพสูง','ทนทาน รับประกันดี'],cons:['ราคาสูง'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'ac3',cat:'aircon',sub:'air',brand:'Haier',name:'HSU-13VNB03T 12000 BTU',img:'',price:12900,old:14900,score:82,s:{price:88,perf:76,durability:78,reviews:82},rating:4.3,reviews:5200,badge:'cheap',pros:['ราคาถูกสุดในกลุ่ม','ติดตั้งง่าย'],cons:['ประสิทธิภาพต่ำกว่า Daikin'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'ac4',cat:'aircon',sub:'air',brand:'Samsung',name:'AR13AXHQAWKXST 12000 BTU',img:'',price:15900,old:17900,score:84,s:{price:78,perf:86,durability:84,reviews:86},rating:4.4,reviews:2900,badge:'',pros:['Triangle design ลมเย็นเร็ว','Fast Cooling'],cons:['ราคากลาง'],links:{shopee:'#',lazada:'#',amazon:''}})
+
+// ★ FAN
+P({id:'fn1',cat:'fan',sub:'fan',brand:'Hatari',name:'HT-T16M1 ตั้งพื้น 16 นิ้ว',img:'',price:890,old:1090,score:85,s:{price:96,perf:76,durability:86,reviews:82},rating:4.4,reviews:6200,badge:'best',pros:['ราคาถูกมาก แบรนด์ไทยไว้ใจ','ทนทาน อะไหล่หาง่าย'],cons:['เสียงดังกว่าพัดลม DC'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'fn2',cat:'fan',sub:'fan',brand:'Panasonic',name:'F-MN305 DC Motor 12 นิ้ว',img:'',price:2990,old:3490,score:87,s:{price:76,perf:92,durability:90,reviews:90},rating:4.6,reviews:2900,badge:'',pros:['DC Motor เงียบมาก ประหยัดไฟ','ลมนิ่มสม่ำเสมอ'],cons:['ราคาสูงกว่าพัดลมทั่วไป'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'fn3',cat:'fan',sub:'fan',brand:'Xiaomi',name:'Mi Smart Standing Fan 2',img:'',price:1990,old:2490,score:83,s:{price:88,perf:82,durability:78,reviews:84},rating:4.4,reviews:4100,badge:'cheap',pros:['เชื่อมต่อ app ได้','ดีไซน์ทันสมัย ราคาถูก'],cons:['อะไหล่หายากถ้าพัง'],links:{shopee:'#',lazada:'#',amazon:''}})
+
+// ★ WASHER
+P({id:'ws1',cat:'laundry',sub:'washer',brand:'LG',name:'TV2515NTWV ฝาบน 15 กก.',img:'',price:12900,old:14900,score:88,s:{price:80,perf:88,durability:88,reviews:96},rating:4.7,reviews:5100,badge:'best',pros:['DD Motor รับประกัน 10 ปี','ขนาดใหญ่คุ้มค่า'],cons:['ตัวใหญ่ต้องการพื้นที่'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'ws2',cat:'laundry',sub:'washer',brand:'Samsung',name:'WA13CG5441BD ฝาบน 13 กก.',img:'',price:9900,old:11900,score:84,s:{price:84,perf:84,durability:84,reviews:84},rating:4.4,reviews:3200,badge:'',pros:['Wobble Technology ผ้าไม่พัน','ราคากลาง'],cons:['รับประกันสั้นกว่า LG'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'ws3',cat:'laundry',sub:'washer',brand:'Haier',name:'HW80-BP12929B ฝาหน้า 8 กก.',img:'',price:8900,old:10900,score:80,s:{price:86,perf:76,durability:78,reviews:78},rating:4.2,reviews:2800,badge:'cheap',pros:['ฝาหน้าราคาประหยัด','ใช้น้ำน้อย'],cons:['ความจุเล็กกว่า'],links:{shopee:'#',lazada:'#',amazon:''}})
+
+// ★ VACUUM
+P({id:'vc1',cat:'floorcare',sub:'vacuum',brand:'Dyson',name:'V8 Absolute Cordless',img:'',price:13900,old:16900,score:87,s:{price:60,perf:98,durability:92,reviews:96},rating:4.7,reviews:3800,badge:'premium',pros:['แรงดูดสูงสุด ไร้สายใช้ได้นาน','หัวดูดครบชุด'],cons:['ราคาสูงมาก'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+P({id:'vc2',cat:'floorcare',sub:'vacuum',brand:'Xiaomi',name:'G10 Plus Cordless',img:'',price:5990,old:7490,score:84,s:{price:84,perf:80,durability:80,reviews:92},rating:4.5,reviews:6200,badge:'best',pros:['ราคาถูก แรงดูดดี','แบตอยู่ได้นาน'],cons:['หัวดูดน้อยกว่า Dyson'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'vc3',cat:'floorcare',sub:'vacuum',brand:'Dyson',name:'V15 Detect',img:'',price:22900,old:26900,score:85,s:{price:44,perf:100,durability:94,reviews:96},rating:4.8,reviews:2100,badge:'',pros:['Laser Detect หาฝุ่นที่มองไม่เห็น','แรงดูดสูงสุดในตลาด'],cons:['ราคาแพงที่สุด'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+
+// ★ ROBOT VACUUM
+P({id:'rb1',cat:'floorcare',sub:'robot',brand:'Roborock',name:'Q5 Pro Robot',img:'',price:14900,old:17900,score:89,s:{price:74,perf:96,durability:90,reviews:96},rating:4.7,reviews:4200,badge:'best',pros:['แผนผัง LiDAR แม่นยำ','ถูพื้นพร้อมดูดฝุ่นได้'],cons:['ราคาค่อนข้างสูง'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+P({id:'rb2',cat:'floorcare',sub:'robot',brand:'Xiaomi',name:'Robot Vacuum E10',img:'',price:4990,old:6490,score:80,s:{price:92,perf:68,durability:76,reviews:84},rating:4.3,reviews:7800,badge:'cheap',pros:['ราคาถูกที่สุดในกลุ่ม','เชื่อมต่อ Mi Home ได้'],cons:['ไม่มี LiDAR เส้นทางสุ่ม'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'rb3',cat:'floorcare',sub:'robot',brand:'Dreame',name:'D10 Plus Auto-Empty',img:'',price:11900,old:14900,score:86,s:{price:78,perf:88,durability:86,reviews:90},rating:4.6,reviews:3300,badge:'',pros:['สถานีดูดฝุ่นอัตโนมัติ','แผนผังดี'],cons:['ถุงกรองต้องซื้อเพิ่ม'],links:{shopee:'#',lazada:'#',amazon:''}})
+
+// ★ AIR PURIFIER
+P({id:'ap1',cat:'airquality',sub:'purifier',brand:'Sharp',name:'FP-J60TA HEPA + Plasmacluster',img:'',price:7990,old:9490,score:88,s:{price:78,perf:90,durability:90,reviews:94},rating:4.6,reviews:3900,badge:'best',pros:['Plasmacluster กำจัดเชื้อโรค','เงียบมาก HEPA จริง'],cons:['ราคาสูงกว่าบางรุ่น'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'ap2',cat:'airquality',sub:'purifier',brand:'Xiaomi',name:'Mi Air Purifier 4 Pro',img:'',price:4990,old:5990,score:84,s:{price:86,perf:82,durability:80,reviews:88},rating:4.5,reviews:8100,badge:'cheap',pros:['HEPA จริง ราคาถูก','เชื่อมต่อ app ได้'],cons:['แผ่นกรองแพงเมื่อเปลี่ยน'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+P({id:'ap3',cat:'airquality',sub:'purifier',brand:'Dyson',name:'Purifier Cool TP09',img:'',price:24900,old:29900,score:83,s:{price:40,perf:96,durability:94,reviews:94},rating:4.6,reviews:1200,badge:'premium',pros:['พัดลม+ฟอกอากาศในเครื่องเดียว','รายงาน AQI แบบ Real-time'],cons:['ราคาแพงมาก กรองแพง'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+
+// ★ HAIR DRYER
+P({id:'hd1',cat:'personal',sub:'hairdryer',brand:'Dyson',name:'Supersonic HD07',img:'',price:16900,old:18900,score:85,s:{price:42,perf:100,durability:92,reviews:98},rating:4.8,reviews:2900,badge:'premium',pros:['ไม่ทำลายเส้นผม ลดเวลาอบแห้ง','เงียบที่สุดในกลุ่ม'],cons:['ราคาแพงมาก'],links:{shopee:'#',lazada:'#',amazon:'#'}})
+P({id:'hd2',cat:'personal',sub:'hairdryer',brand:'Panasonic',name:'EH-NA98 NanoCare',img:'',price:4490,old:5490,score:86,s:{price:76,perf:88,durability:88,reviews:92},rating:4.6,reviews:3800,badge:'best',pros:['Nano Care ลดผมแตก','ราคาสมเหตุผล คุณภาพดี'],cons:['ราคาสูงกว่ารุ่นพื้นฐาน'],links:{shopee:'#',lazada:'#',amazon:''}})
+P({id:'hd3',cat:'personal',sub:'hairdryer',brand:'Rowenta',name:'CV8820 Pro Expert 2400W',img:'',price:2490,old:2990,score:81,s:{price:82,perf:78,durability:80,reviews:82},rating:4.3,reviews:1900,badge:'cheap',pros:['กำลังสูง 2400W ราคากลาง','น้ำหนักเบา'],cons:['ไม่มี Nano/Ion technology'],links:{shopee:'#',lazada:'#',amazon:''}})
+
+// ─── State ───────────────────────────────────────────────────
+let activeCat = 'all';
+let activeSub = 'all';
+let sortBy = 'value';
+let searchQ = '';
+let compare = [];
+
+// ─── Utilities ───────────────────────────────────────────────
+function tier(s){ return s>=85?'green':s>=72?'amber':'orange'; }
+function tierColor(s){ return s>=85?'var(--green)':s>=72?'var(--amber)':'var(--hot)'; }
+function fmtPrice(n){ return '฿'+n.toLocaleString(); }
+function fmtNum(n){ return n>=1000?(n/1000).toFixed(1)+'k':n.toString(); }
+
+function stars(r,cnt){
+  let out='<div class="stars">';
+  for(let i=1;i<=5;i++){
+    const full=i<=Math.floor(r);
+    const cls=full||(i-r<1)?'star-fill':'';
+    out+=`<svg viewBox="0 0 24 24" class="${cls}" fill="${full?'currentColor':'none'}" stroke="currentColor" stroke-width="1.5"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg>`;
+  }
+  const cntFmt=cnt>=1000?(cnt/1000).toFixed(cnt>=10000?0:1)+'k':cnt;
+  out+=`<span>${r} · ${cntFmt} รีวิว</span></div>`;
+  return out;
+}
+
+function scoreBox(score){
+  const c=tierColor(score);
+  const lbl=score>=85?'ดีเยี่ยม':score>=72?'ดี':'ปานกลาง';
+  return `<div class="score-box" style="background:${c}"><div class="score-num">${score}</div><div class="score-lbl">${lbl}</div></div>`;
+}
+
+function buyBtn(type,url){
+  if(!url)return '';
+  const labels={shopee:'Shopee',lazada:'Lazada',amazon:'Amazon'};
+  return `<a href="${url}" target="_blank" rel="sponsored nofollow noopener" class="btn-buy btn-${type}">${labels[type]}</a>`;
+}
+
+function bdItem(label,v){
+  const c=v>=85?'fill-green':v>=72?'fill-amber':'fill-orange';
+  return `<div class="bd-item"><span class="bd-label">${label}</span><div class="bd-bar"><div class="bd-fill ${c}" data-w="${v}" style="width:0"></div></div><span class="bd-val">${v}</span></div>`;
+}
+
+function card(p,rank){
+  const crown=rank===1
+    ?`<div class="rank-crown">👑 อันดับ 1</div>`
+    :(rank<=3?`<div class="rank-crown rank-num">#${rank}</div>`:'');
+  const badgeEl=p.badge&&BADGES[p.badge]?`<div class="badge-pill ${BADGES[p.badge].cls}">${BADGES[p.badge].text}</div>`:'';
+  const savings=p.old&&p.old>p.price?`<span class="savings-badge">ลด ${Math.round((p.old-p.price)/p.old*100)}%</span>`:'';
+  const priceOld=p.old?`<span class="price-old">฿${p.old.toLocaleString()}</span>`:'';
+  const inCmp=compare.includes(p.id);
+  const icon=ICONS[p.sub]||'';
+  const imgEl=p.img?`<img src="${p.img}" alt="${p.name}" onerror="this.remove()" loading="lazy">`:'';
+  return `<article class="card" data-id="${p.id}">
+    <div class="card-top-bar">${crown}${badgeEl}</div>
+    <div class="card-header">
+      <div class="card-thumb-sm">
+        ${imgEl}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">${icon}</svg>
+      </div>
+      <div class="card-main">
+        <div class="card-brand">${p.brand}</div>
+        <div class="card-name">${p.name}</div>
+        <span class="sub-tag">${SUB_NAMES[p.sub]||p.sub}</span>
+        ${stars(p.rating,p.reviews)}
+        <div class="card-price-row">
+          <span class="price-now">฿${p.price.toLocaleString()}</span>
+          ${priceOld}${savings}
+        </div>
+      </div>
+      ${scoreBox(p.score)}
+    </div>
+    <div class="card-body">
+      <div class="breakdown">
+        ${bdItem('ราคา/คุ้ม',p.s.price)}
+        ${bdItem('ประสิทธิภาพ',p.s.perf)}
+        ${bdItem('ความทนทาน',p.s.durability)}
+        ${bdItem('รีวิวผู้ใช้',p.s.reviews)}
+      </div>
+      <div class="pros-cons">
+        ${p.pros.map(x=>`<p><span class="ico-p">✓</span>${x}</p>`).join('')}
+        ${p.cons.map(x=>`<p><span class="ico-c">△</span>${x}</p>`).join('')}
+      </div>
+      <div class="buy-row">
+        ${buyBtn('shopee',p.links.shopee)}
+        ${buyBtn('lazada',p.links.lazada)}
+        ${buyBtn('amazon',p.links.amazon)}
+        <button class="btn-cmp${inCmp?' selected':''}" onclick="toggleCompare('${p.id}')" aria-pressed="${inCmp}">${inCmp?'✓ เลือก':'+ เปรียบ'}</button>
+      </div>
+    </div>
+  </article>`;
+}
+
+// ─── Filter & Sort ───────────────────────────────────────────
+function getList(){
+  let list=PRODUCTS.filter(p=>{
+    if(activeCat!=='all'&&p.cat!==activeCat)return false;
+    if(activeSub!=='all'&&p.sub!==activeSub)return false;
+    if(searchQ){
+      const q=searchQ.toLowerCase();
+      if(!(p.brand.toLowerCase().includes(q)||p.name.toLowerCase().includes(q)||(p.sub&&p.sub.includes(q))))return false;
+    }
+    return true;
+  });
+  if(sortBy==='value')list.sort((a,b)=>b.score-a.score);
+  else if(sortBy==='priceLow')list.sort((a,b)=>a.price-b.price);
+  else if(sortBy==='priceHigh')list.sort((a,b)=>b.price-a.price);
+  else if(sortBy==='reviews')list.sort((a,b)=>b.reviews-a.reviews);
+  return list;
+}
+
+// ─── Render ──────────────────────────────────────────────────
+function renderTabs(){
+  const tabs=document.getElementById('tabs');
+  const all=[{id:'all',name:'ทั้งหมด',icon:'<circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2"/>'},...CATS];
+  tabs.innerHTML=all.map(c=>`<button class="tab${activeCat===c.id?' active':''}" onclick="setcat('${c.id}')" role="tab" aria-selected="${activeCat===c.id}">
+    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">${c.icon}</svg>${c.name}
+  </button>`).join('');
+}
+
+function renderSubs(){
+  const sub=document.getElementById('subchips');
+  if(activeCat==='all'){sub.innerHTML='';return;}
+  const cat=CATS.find(c=>c.id===activeCat);
+  if(!cat||cat.subs.length<2){sub.innerHTML='';return;}
+  sub.innerHTML=[{id:'all',name:'ทั้งหมด'},...cat.subs].map(s=>
+    `<button class="chip${activeSub===s.id?' active':''}" onclick="setsub('${s.id}')">${s.name}</button>`
+  ).join('');
+}
+
+function renderGrid(){
+  const list=getList();
+  const grid=document.getElementById('grid');
+  if(!list.length){
+    grid.innerHTML=`<div class="no-results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><br>ไม่พบสินค้าที่ค้นหา</div>`;
+    return;
+  }
+  grid.innerHTML=list.map((p,i)=>card(p,i+1)).join('');
+  const title=document.getElementById('secTitle');
+  const count=document.getElementById('secCount');
+  const cat=CATS.find(c=>c.id===activeCat);
+  const sub=cat&&cat.subs.find(s=>s.id===activeSub);
+  title.textContent=activeCat==='all'?'ทุกหมวด':sub?sub.name:cat.name;
+  count.textContent=`${list.length} รุ่น`;
+  animateBars();
+}
+
+function animateBars(){
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.bd-fill').forEach(el=>{
+      el.style.width=el.dataset.w+'%';
+    });
+  });
+}
+
+function renderFeature(){
+  if(!PRODUCTS.length) return;
+  const best=PRODUCTS.reduce((a,b)=>b.score>a.score?b:a);
+  const t=tier(best.score);
+  const icon=ICONS[best.sub]||'';
+  document.getElementById('feature').innerHTML=`
+    <div class="feat-label">🏆 คุ้มสุดประจำสัปดาห์</div>
+    <div class="feat-body">
+      <div class="feat-thumb">
+        ${best.img?`<img src="${best.img}" alt="${best.name}" onerror="this.remove()" loading="lazy">`:''}
+        <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1">${icon}</svg>
+      </div>
+      <div class="feat-info">
+        <div class="feat-brand">${best.brand}</div>
+        <div class="feat-name">${best.name}</div>
+        <div class="feat-price">${fmtPrice(best.price)}</div>
+        <div class="feat-score-wrap">
+          <div class="feat-score-box" style="background:${tierColor(best.score)}">
+            <span class="feat-score-num">${best.score}</span>
+          </div>
+          <span class="tier-${t}" style="font-family:var(--font-head);font-size:13px;font-weight:700">${best.score} คะแนน</span>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAll(){
+  renderTabs();
+  renderSubs();
+  renderGrid();
+}
+
+// ─── Events ──────────────────────────────────────────────────
+function setcat(id){
+  activeCat=id; activeSub='all';
+  renderAll();
+  window.scrollTo({top:200,behavior:'smooth'});
+}
+function setsub(id){ activeSub=id; renderGrid(); }
+
+document.getElementById('sortSel').addEventListener('change',e=>{ sortBy=e.target.value; renderGrid(); });
+
+let searchTimer;
+document.getElementById('searchInput').addEventListener('input',e=>{
+  clearTimeout(searchTimer);
+  searchTimer=setTimeout(()=>{ searchQ=e.target.value.trim(); activeCat='all'; activeSub='all'; renderAll(); },250);
+});
+
+// ─── Compare ─────────────────────────────────────────────────
+function toggleCompare(id){
+  if(compare.includes(id)){
+    compare=compare.filter(x=>x!==id);
+  } else {
+    if(compare.length>=3){ alert('เปรียบเทียบได้สูงสุด 3 รุ่น'); return; }
+    compare.push(id);
+  }
+  renderCmpBar();
+  renderGrid();
+}
+
+function renderCmpBar(){
+  const bar=document.getElementById('cmpbar');
+  const slots=document.getElementById('cmpSlots');
+  if(!compare.length){ bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+  const empties=3-compare.length;
+  const filled=compare.map(id=>{
+    const p=PRODUCTS.find(x=>x.id===id);
+    return `<div class="cmp-slot filled">${p.brand} ${p.name.slice(0,18)}<button class="cmp-slot-rm" onclick="toggleCompare('${id}')" aria-label="ลบ">×</button></div>`;
+  });
+  const empty=Array(empties).fill(`<div class="cmp-slot">+ เพิ่มสินค้า</div>`);
+  slots.innerHTML=[...filled,...empty].join('');
+}
+
+function clearCompare(){ compare=[]; renderCmpBar(); renderGrid(); }
+
+function openCompare(){
+  if(!compare.length)return;
+  const prods=compare.map(id=>PRODUCTS.find(x=>x.id===id));
+  const best=(key)=>{
+    const vals=prods.map(p=>p[key]);
+    const max=Math.max(...vals);
+    return vals.map(v=>v===max);
+  };
+  const bestScore=best('score');
+  const bestPrice=prods.map(p=>p.price).map((v,i,a)=>v===Math.min(...a));
+  const rows=[
+    ['แบรนด์', prods.map(p=>p.brand)],
+    ['รุ่น', prods.map(p=>p.name)],
+    ['ราคา', prods.map((p,i)=>`<span class="${bestPrice[i]?'cmp-best':''}">${fmtPrice(p.price)}</span>`)],
+    ['คะแนนรวม', prods.map((p,i)=>`<span class="${bestScore[i]?'cmp-best':''}">${p.score}</span>`)],
+    ['ราคา/ความคุ้ม', prods.map(p=>p.s.price)],
+    ['ประสิทธิภาพ', prods.map(p=>p.s.perf)],
+    ['ความทนทาน', prods.map(p=>p.s.durability)],
+    ['รีวิว', prods.map(p=>p.s.reviews)],
+    ['ดาวเฉลี่ย', prods.map(p=>p.rating+'★')],
+    ['จำนวนรีวิว', prods.map(p=>fmtNum(p.reviews))],
+  ];
+  const thead=`<tr><th>รายการ</th>${prods.map(p=>`<th>${p.brand}<br><span style="font-weight:400;font-family:var(--font-body)">${p.name}</span></th>`).join('')}</tr>`;
+  const tbody=rows.map(([l,vals])=>`<tr><td><strong>${l}</strong></td>${vals.map(v=>`<td>${v}</td>`).join('')}</tr>`).join('');
+  const buyRow=`<tr><td>ซื้อจาก</td>${prods.map(p=>`<td>${buyBtn('shopee',p.links.shopee)}${buyBtn('lazada',p.links.lazada)}${buyBtn('amazon',p.links.amazon)}</td>`).join('')}</tr>`;
+  document.getElementById('cmpContent').innerHTML=`<table class="cmp-table"><thead>${thead}</thead><tbody>${tbody}${buyRow}</tbody></table>`;
+  document.getElementById('cmpModal').classList.add('visible');
+}
+
+function closeCompare(){ document.getElementById('cmpModal').classList.remove('visible'); }
+
+document.getElementById('cmpModal').addEventListener('click',e=>{ if(e.target===e.currentTarget)closeCompare(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeCompare(); });
+
+// ─── Init ─────────────────────────────────────────────────────
+(async function(){
+  try{
+    const r=await fetch('products.json');
+    if(r.ok){const d=await r.json();PRODUCTS.length=0;d.forEach(p=>PRODUCTS.push(p));}
+  }catch(e){}
+  document.getElementById('statProds').textContent=PRODUCTS.length;
+  document.getElementById('statCats').textContent=CATS.length;
+  renderFeature();
+  renderAll();
+})();
+</script>
+</body>
+</html>

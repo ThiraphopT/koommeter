@@ -1,0 +1,119 @@
+name: Check Affiliate Links
+
+on:
+  push:
+    paths:
+      - 'products.json'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect missing affiliate links
+        id: detect
+        run: |
+          python3 << 'PYEOF'
+          import json, os
+
+          with open('products.json', encoding='utf-8') as f:
+              products = json.load(f)
+
+          missing_rows = []
+          for p in products:
+              links = p.get('links', {})
+              bad = [k for k, v in links.items() if v == '#']
+              if bad:
+                  missing_rows.append(
+                      f"| `{p['id']}` | {p['brand']} {p['name']} | {', '.join(bad)} |"
+                  )
+
+          count = len(missing_rows)
+          env_file = os.environ['GITHUB_OUTPUT']
+          with open(env_file, 'a', encoding='utf-8') as f:
+              f.write(f"count={count}\n")
+              f.write("has_missing=" + ("true" if count > 0 else "false") + "\n")
+              if missing_rows:
+                  f.write("table<<ENDTABLE\n")
+                  f.write("| ID | สินค้า | แพลตฟอร์มที่ขาด |\n")
+                  f.write("|---|---|---|\n")
+                  f.write("\n".join(missing_rows) + "\n")
+                  f.write("ENDTABLE\n")
+          PYEOF
+
+      - name: Create or update GitHub Issue for missing links
+        if: steps.detect.outputs.has_missing == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const count = '${{ steps.detect.outputs.count }}';
+            const table = `${{ steps.detect.outputs.table }}`;
+            const body = `## 🔗 สินค้าที่ยังไม่มี Affiliate Link
+
+            ตรวจพบสินค้า **${count} รุ่น** ที่ยังใช้ \`#\` เป็น placeholder:
+
+            ${table}
+
+            ---
+            ### วิธีแก้ไข
+            1. เปิด \`admin.html\` บน browser
+            2. คลิก **ขาดลิงก์ ❌** ที่แถบกรอง
+            3. กรอก affiliate URL จริงจาก Shopee/Lazada/Amazon Affiliate
+            4. คลิก **Export products.json** แล้ว commit ไฟล์ใหม่
+
+            > 🤖 ตรวจสอบอัตโนมัติโดย GitHub Actions เมื่อ \`products.json\` เปลี่ยนแปลง`;
+
+            // ปิด issue เก่าก่อน (ถ้ามี) แล้วเปิดใหม่
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'affiliate-links',
+              per_page: 5
+            });
+
+            if (existing.data.length > 0) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing.data[0].number,
+                title: `🔗 [Affiliate] พบ ${count} รุ่นที่ยังไม่มีลิงก์ — อัปเดตล่าสุด`,
+                body: body
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: `🔗 [Affiliate] พบ ${count} รุ่นที่ยังไม่มีลิงก์ affiliate`,
+                body: body,
+                labels: ['affiliate-links']
+              });
+            }
+
+      - name: Close issue if all links are filled
+        if: steps.detect.outputs.has_missing == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'affiliate-links',
+              per_page: 5
+            });
+            for (const issue of existing.data) {
+              await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'closed',
+                body: issue.body + '\n\n---\n✅ ปิด Issue อัตโนมัติ — ลิงก์ affiliate ครบทุกรุ่นแล้ว!'
+              });
+            }
