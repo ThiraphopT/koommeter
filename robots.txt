@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin.html
 
-Sitemap: https://koommeter.teerapob-t.workers.dev/sitemap.xml
+Sitemap: https://koommeter.com/sitemap.xml

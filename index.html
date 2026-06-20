@@ -9,10 +9,10 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="KoomMeter">
 <meta name="theme-color" content="#102A43">
-<link rel="canonical" href="https://koommeter.teerapob-t.workers.dev/">
+<link rel="canonical" href="https://koommeter.com/">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://koommeter.teerapob-t.workers.dev/">
+<meta property="og:url" content="https://koommeter.com/">
 <meta property="og:site_name" content="คุ้มมิเตอร์ KoomMeter">
 <meta property="og:title" content="คุ้มมิเตอร์ · KoomMeter — เปรียบเทียบเครื่องใช้ไฟฟ้าที่คุ้มค่าที่สุดในไทย 2026">
 <meta property="og:description" content="เปรียบเทียบและจัดอันดับเครื่องใช้ไฟฟ้า 37 รุ่น ด้วยคะแนนโปร่งใส พร้อมลิงก์ซื้อจาก Shopee และ Lazada">
@@ -26,13 +26,13 @@
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "url": "https://koommeter.teerapob-t.workers.dev/",
+  "url": "https://koommeter.com/",
   "name": "คุ้มมิเตอร์ KoomMeter",
   "description": "เปรียบเทียบและจัดอันดับเครื่องใช้ไฟฟ้าที่คุ้มค่าที่สุดในไทย",
   "inLanguage": "th",
   "potentialAction": {
     "@type": "SearchAction",
-    "target": {"@type": "EntryPoint", "urlTemplate": "https://koommeter.teerapob-t.workers.dev/?q={search_term_string}"},
+    "target": {"@type": "EntryPoint", "urlTemplate": "https://koommeter.com/?q={search_term_string}"},
     "query-input": "required name=search_term_string"
   }
 }
@@ -767,7 +767,7 @@ document.addEventListener('keydown',e=>{ if(e.key==='Escape')closeCompare(); });
 
 // ─── SEO: inject ItemList + FAQPage JSON-LD after products load ──
 function injectSchemas(products){
-  const BASE='https://koommeter.teerapob-t.workers.dev/';
+  const BASE='https://koommeter.com/';
   const sorted=[...products].sort((a,b)=>b.score-a.score);
   const schema={
     "@context":"https://schema.org",
